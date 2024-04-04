@@ -1,6 +1,7 @@
 package kg.inai.qrgenerator.entity.repository;
 
 import kg.inai.qrgenerator.entity.Attendance;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
-    List<Attendance> findAllByGroupId(Long id);
+    List<Attendance> findAllByGroupIdAndDateBetween(Long groupId, LocalDate from, LocalDate till, Sort sort);
 
     Optional<Attendance> findByDate(LocalDate date);
 

@@ -10,6 +10,8 @@ import kg.inai.qrgenerator.service.statistics.dtos.StudentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
 
 @Service
@@ -38,31 +40,33 @@ public class StatisticsService {
     }
 
     public RestResponse getStudentsRatingLow(Long groupId, Integer semester, Integer year) {
-        var attendanceByGroup = attendanceRepository.countAllByGroupId(groupId);
-
-        var students = userRepository.findAllByGroupId(groupId).stream()
-                .sorted((s1, s2) -> Long.compare(
-                        attendanceRepository.getStudentsWithAttendance(groupId, s2.getId(), semester, year),
-                        attendanceRepository.getStudentsWithAttendance(groupId, s1.getId(), semester, year)))
-                .map(s -> mapToStudentDto(s, attendanceByGroup, groupId, semester, year))
-                .toList();
-
-        return RestResponse.builder()
-                .message(SUCCESS.getMessage())
-                .code(SUCCESS.getCode())
-                .body(students)
-                .build();
+        return getStudentsRating(groupId, semester, year, true);
     }
 
     public RestResponse getStudentsRatingHigh(Long groupId, Integer semester, Integer year) {
+        return getStudentsRating(groupId, semester, year, false);
+    }
+
+    private RestResponse getStudentsRating(Long groupId, Integer semester, Integer year, boolean ratingLow) {
         var attendanceByGroup = attendanceRepository.countAllByGroupId(groupId);
 
-        var students = userRepository.findAllByGroupId(groupId).stream()
-                .sorted((s1, s2) -> Long.compare(
-                        attendanceRepository.getStudentsWithAttendance(groupId, s1.getId(), semester, year),
-                        attendanceRepository.getStudentsWithAttendance(groupId, s2.getId(), semester, year)))
-                .map(s -> mapToStudentDto(s, attendanceByGroup, groupId, semester, year))
-                .toList();
+        List<StudentDto> students;
+
+        if (ratingLow) {
+            students = userRepository.findAllByGroupId(groupId).stream()
+                    .sorted((s1, s2) -> Long.compare(
+                            attendanceRepository.getStudentsWithAttendance(groupId, s2.getId(), semester, year),
+                            attendanceRepository.getStudentsWithAttendance(groupId, s1.getId(), semester, year)))
+                    .map(s -> mapToStudentDto(s, attendanceByGroup, groupId, semester, year))
+                    .toList();
+        } else {
+            students = userRepository.findAllByGroupId(groupId).stream()
+                    .sorted((s1, s2) -> Long.compare(
+                            attendanceRepository.getStudentsWithAttendance(groupId, s1.getId(), semester, year),
+                            attendanceRepository.getStudentsWithAttendance(groupId, s2.getId(), semester, year)))
+                    .map(s -> mapToStudentDto(s, attendanceByGroup, groupId, semester, year))
+                    .toList();
+        }
 
         return RestResponse.builder()
                 .message(SUCCESS.getMessage())

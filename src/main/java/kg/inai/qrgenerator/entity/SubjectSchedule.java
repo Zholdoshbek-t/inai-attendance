@@ -1,12 +1,9 @@
 package kg.inai.qrgenerator.entity;
 
 import jakarta.persistence.*;
+import kg.inai.qrgenerator.commons.enums.ClassDay;
 import kg.inai.qrgenerator.commons.enums.ClassTime;
-import kg.inai.qrgenerator.entity.base.BaseEntity;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-
-import java.time.DayOfWeek;
 
 @Table
 @Getter
@@ -22,11 +19,11 @@ public class SubjectSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private ClassTime classTime;
 
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
+    @Enumerated(EnumType.ORDINAL)
+    private ClassDay dayOfWeek;
 
     @ManyToOne
     @JoinColumn(

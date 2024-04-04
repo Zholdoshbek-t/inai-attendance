@@ -6,6 +6,7 @@ import kg.inai.qrgenerator.controller.dtos.RestResponse;
 import kg.inai.qrgenerator.entity.Group;
 import kg.inai.qrgenerator.entity.repository.GroupRepository;
 import kg.inai.qrgenerator.entity.repository.UserRepository;
+import kg.inai.qrgenerator.service.group.dtos.GroupDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,10 @@ public class GroupService {
         var user = userRepository.findById(studentId).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         var group = groupRepository.findById(groupId).orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
+        if(group.getStudents().contains(user)) {
+            throw new AlreadyExistsException(ALREADY_EXISTS);
+        }
+
         group.getStudents().add(user);
         groupRepository.save(group);
 
@@ -44,9 +49,26 @@ public class GroupService {
         var user = userRepository.findById(studentId).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         var group = groupRepository.findById(groupId).orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
+        if(group.getStudents().contains(user)) {
+            throw new NotFoundException(STUDENT_NOT_FOUND_IN_GROUP);
+        }
+
         group.getStudents().remove(user);
         groupRepository.save(group);
 
         return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
+    }
+
+    public RestResponse getGroups() {
+        var groups = groupRepository.findAll().stream()
+                .map(group -> GroupDto.builder().id(group.getId()).name(group.getName()).build())
+                .sorted()
+                .toList();
+
+        return RestResponse.builder()
+                .message(SUCCESS.getMessage())
+                .code(SUCCESS.getCode())
+                .body(groups)
+                .build();
     }
 }

@@ -1,7 +1,6 @@
 package kg.inai.qrgenerator.entity;
 
 import jakarta.persistence.*;
-import kg.inai.qrgenerator.entity.base.BaseEntity;
 import lombok.*;
 
 import java.time.LocalDate;

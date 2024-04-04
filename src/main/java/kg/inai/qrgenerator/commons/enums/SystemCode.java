@@ -13,6 +13,7 @@ public enum SystemCode {
     SUBJECT_NOT_FOUND(1, "Предмет не найден"),
     SUBJECT_SCHEDULE_NOT_FOUND(1, "Пара предмета не найден"),
     VALUE_NOT_FOUND(1, "Объект не найден"),
+    STUDENT_NOT_FOUND_IN_GROUP(1, "Группа не включает переданного студента"),
     ALREADY_EXISTS(2, "Уже существует"),
     INTERNAL_SERVER_ERROR(999, "Внутренняя ошибка сервера");
 

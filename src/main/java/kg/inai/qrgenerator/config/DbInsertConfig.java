@@ -12,11 +12,14 @@ import kg.inai.qrgenerator.entity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.DayOfWeek.*;
+import static kg.inai.qrgenerator.commons.enums.ClassDay.*;
 import static kg.inai.qrgenerator.commons.enums.ClassTime.FIRST;
 import static kg.inai.qrgenerator.commons.enums.ClassTime.SECOND;
 import static kg.inai.qrgenerator.commons.enums.Role.STUDENT;
@@ -31,6 +34,11 @@ public class DbInsertConfig {
     private final SubjectRepository subjectRepository;
     private final SubjectScheduleRepository subjectScheduleRepository;
 
+    @Bean
+    public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
+        return new BufferedImageHttpMessageConverter();
+    }
+
     @PostConstruct
     public void init() {
         var groupAin = Group.builder().name("АИН-1-20").build();
@@ -39,9 +47,9 @@ public class DbInsertConfig {
         groupRepository.saveAll(List.of(groupAin, groupWin));
 
         var teacherMath = User.builder()
-                .firstName("ABC")
-                .lastName("ABC")
-                .middleName("ABC")
+                .firstName("Айбек")
+                .lastName("Айбек")
+                .middleName("Айбек")
                 .username("math.teacher")
                 .password("math.teacher")
                 .valid(true)
@@ -49,9 +57,9 @@ public class DbInsertConfig {
                 .build();
 
         var teacherDb = User.builder()
-                .firstName("ABC")
-                .lastName("ABC")
-                .middleName("ABC")
+                .firstName("Салтанат")
+                .lastName("Салтанат")
+                .middleName("Салтанат")
                 .username("db.teacher")
                 .password("db.teacher")
                 .valid(true)

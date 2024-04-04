@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
@@ -32,11 +33,12 @@ public class QRService {
     private final SubjectScheduleRepository subjectScheduleRepository;
     private final AttendanceRepository attendanceRepository;
 
-    public BufferedImage generateQRCode(String classTime) {
+    public BufferedImage generateQRCode(String classTime, String dayOfWeek) {
         var teacher = getAuthentication();
 
         var subjectSchedule =
-                subjectScheduleRepository.findByTeacherIdAndClassTimeIs(teacher.getId(), ClassTime.valueOf(classTime))
+                subjectScheduleRepository.findByTeacherIdAndClassTimeIsAndDayOfWeekIs(teacher.getId(),
+                                ClassTime.valueOf(classTime), DayOfWeek.valueOf(dayOfWeek))
                         .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
 
         var date = LocalDate.now();
