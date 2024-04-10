@@ -2,16 +2,18 @@ package kg.inai.qrgenerator.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
-import kg.inai.qrgenerator.service.user.UserService;
-import kg.inai.qrgenerator.service.user.dtos.UserDto;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
+import kg.inai.qrgenerator.service.qr.UserService;
+import kg.inai.qrgenerator.service.qr.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static kg.inai.qrgenerator.commons.constants.Endpoints.USER_URL;
+
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(USER_URL)
 @RequiredArgsConstructor
 @Tag(name = "User API", description = "API для пользователей")
 public class UserController {

@@ -2,18 +2,19 @@ package kg.inai.qrgenerator.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
-import kg.inai.qrgenerator.service.attendance.AttendanceService;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
+import kg.inai.qrgenerator.service.qr.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
+import static kg.inai.qrgenerator.commons.constants.Endpoints.ATTENDANCE_URL;
 
 @RestController
-@RequestMapping("/attendance")
+@RequestMapping(ATTENDANCE_URL)
 @RequiredArgsConstructor
 @Tag(name = "Attendance API", description = "API для работы с посещаемостью")
 public class AttendanceController {
@@ -30,9 +31,19 @@ public class AttendanceController {
 
     @Operation(summary = "Получение списка присутствующих на паре по (айди пары)")
     @GetMapping("/{attendanceId}")
-    public ResponseEntity<List<String>> getClassAttendance(@PathVariable Long attendanceId) {
+    public ResponseEntity<RestResponse> getClassAttendance(@PathVariable Long attendanceId) {
 
         return ResponseEntity.ok(attendanceService.getClassAttendance(attendanceId));
+    }
+
+    @Operation(summary = "Получение списка присутствующих на паре по (айди пары)")
+    @GetMapping("/{teacherId}/{classTime}/{dayOfWeek}/{date}")
+    public ResponseEntity<RestResponse> getClassAttendance(@PathVariable Long teacherId,
+                                                           @PathVariable String classTime,
+                                                           @PathVariable String dayOfWeek,
+                                                           @PathVariable LocalDate date) {
+
+        return ResponseEntity.ok(attendanceService.getClassAttendance(teacherId, classTime, dayOfWeek, date));
     }
 
     @Operation(summary = "Получение списка посещаемостей определенной группы между двумя датами")

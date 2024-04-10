@@ -15,6 +15,9 @@ public enum SystemCode {
     VALUE_NOT_FOUND(1, "Объект не найден"),
     STUDENT_NOT_FOUND_IN_GROUP(1, "Группа не включает переданного студента"),
     ALREADY_EXISTS(2, "Уже существует"),
+    JWT_EXCEPTION(3, "JWT не актуален или не начинается с Bearer"),
+    TOKEN_IS_EXPIRED(4, "Время JWT просрочено"),
+    INCORRECT_PASSWORD(4, "Неправильный пароль"),
     INTERNAL_SERVER_ERROR(999, "Внутренняя ошибка сервера");
 
     private final Integer code;

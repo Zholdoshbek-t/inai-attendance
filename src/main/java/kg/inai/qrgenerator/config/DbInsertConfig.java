@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class DbInsertConfig {
     private final GroupRepository groupRepository;
     private final SubjectRepository subjectRepository;
     private final SubjectScheduleRepository subjectScheduleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
@@ -50,8 +52,8 @@ public class DbInsertConfig {
                 .firstName("Айбек")
                 .lastName("Айбек")
                 .middleName("Айбек")
-                .username("math.teacher")
-                .password("math.teacher")
+                    .username("math.teacher")
+                .password(passwordEncoder.encode("123456"))
                 .valid(true)
                 .role(TEACHER)
                 .build();
@@ -61,7 +63,7 @@ public class DbInsertConfig {
                 .lastName("Салтанат")
                 .middleName("Салтанат")
                 .username("db.teacher")
-                .password("db.teacher")
+                .password(passwordEncoder.encode("123456"))
                 .valid(true)
                 .role(TEACHER)
                 .build();
@@ -74,7 +76,7 @@ public class DbInsertConfig {
                     .lastName("Азамат")
                     .middleName("Азамат")
                     .username("student.ain" + i)
-                    .password("student.ain" + i)
+                .password(passwordEncoder.encode("123456"))
                     .valid(true)
                     .role(STUDENT)
                     .build();
@@ -88,7 +90,7 @@ public class DbInsertConfig {
                     .lastName("Байэл")
                     .middleName("Байэл")
                     .username("student.win" + i)
-                    .password("student.win" + i)
+                .password(passwordEncoder.encode("123456"))
                     .valid(true)
                     .role(STUDENT)
                     .build();

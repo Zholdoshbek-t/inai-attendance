@@ -1,18 +1,18 @@
-package kg.inai.qrgenerator.service.subject;
+package kg.inai.qrgenerator.service.qr;
 
 import kg.inai.qrgenerator.commons.enums.ClassDay;
 import kg.inai.qrgenerator.commons.enums.ClassTime;
 import kg.inai.qrgenerator.commons.exception.AlreadyExistsException;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.entity.SubjectSchedule;
 import kg.inai.qrgenerator.entity.repository.GroupRepository;
 import kg.inai.qrgenerator.entity.repository.SubjectScheduleRepository;
 import kg.inai.qrgenerator.entity.repository.UserRepository;
-import kg.inai.qrgenerator.service.subject.dtos.SubjectDto;
+import kg.inai.qrgenerator.service.qr.dto.SubjectDto;
 import kg.inai.qrgenerator.entity.Subject;
 import kg.inai.qrgenerator.entity.repository.SubjectRepository;
-import kg.inai.qrgenerator.service.subject.dtos.SubjectScheduleDto;
+import kg.inai.qrgenerator.service.qr.dto.SubjectScheduleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

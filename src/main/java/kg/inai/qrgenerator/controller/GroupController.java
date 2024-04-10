@@ -2,15 +2,16 @@ package kg.inai.qrgenerator.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
-import kg.inai.qrgenerator.service.group.GroupService;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
+import kg.inai.qrgenerator.service.qr.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static kg.inai.qrgenerator.commons.constants.Endpoints.GROUP_URL;
 
 @RestController
-@RequestMapping("/group")
+@RequestMapping(GROUP_URL)
 @RequiredArgsConstructor
 @Tag(name = "Group API", description = "API для работы с группами")
 public class GroupController {

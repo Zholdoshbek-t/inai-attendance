@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inai_attendance
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate.ddl-auto: create
+    show-sql: true
+
+jwt:
+  secret: c8Dboxr7plcET25mrUsxO92IIet4bzpKN8lck51PimMA9Kiukq0Qau1rtA7txc18
+  expiration: 604800000

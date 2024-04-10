@@ -1,19 +1,22 @@
-package kg.inai.qrgenerator.service.user;
+package kg.inai.qrgenerator.service.qr;
 
 import kg.inai.qrgenerator.commons.enums.Role;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
-import kg.inai.qrgenerator.service.user.dtos.UserDto;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
+import kg.inai.qrgenerator.service.qr.dto.UserDto;
 import kg.inai.qrgenerator.entity.User;
 import kg.inai.qrgenerator.entity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -59,10 +62,11 @@ public class UserService {
         return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
     }
 
-//    public User getAuthentication() {
-//        var authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        return userRepository.findByUsername(authentication.getName())
-//                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var userDb = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+        return new org.springframework.security.core.userdetails
+                .User(username, userDb.getPassword(), userDb.getAuthorities());
+    }
 }

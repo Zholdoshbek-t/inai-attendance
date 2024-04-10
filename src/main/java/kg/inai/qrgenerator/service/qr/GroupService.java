@@ -1,12 +1,12 @@
-package kg.inai.qrgenerator.service.group;
+package kg.inai.qrgenerator.service.qr;
 
 import kg.inai.qrgenerator.commons.exception.AlreadyExistsException;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.entity.Group;
 import kg.inai.qrgenerator.entity.repository.GroupRepository;
 import kg.inai.qrgenerator.entity.repository.UserRepository;
-import kg.inai.qrgenerator.service.group.dtos.GroupDto;
+import kg.inai.qrgenerator.service.qr.dto.GroupDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package kg.inai.qrgenerator.service.subject.dtos;
+package kg.inai.qrgenerator.service.qr.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

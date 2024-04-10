@@ -1,6 +1,7 @@
 package kg.inai.qrgenerator.entity.repository;
 
 import kg.inai.qrgenerator.entity.Attendance;
+import kg.inai.qrgenerator.entity.SubjectSchedule;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     List<Attendance> findAllByGroupIdAndDateBetween(Long groupId, LocalDate from, LocalDate till, Sort sort);
 
-    Optional<Attendance> findByDate(LocalDate date);
+    Optional<Attendance> findByDateAndSubjectSchedule(LocalDate date, SubjectSchedule subjectSchedule);
 
     @Query(value = "SELECT COUNT(*) FROM Attendance a " +
             "INNER JOIN student_attendance sa " +

@@ -5,6 +5,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import kg.inai.qrgenerator.commons.enums.ClassDay;
 import kg.inai.qrgenerator.commons.enums.ClassTime;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
 import kg.inai.qrgenerator.commons.exception.ServerErrorException;
@@ -38,14 +39,14 @@ public class QRService {
 
         var subjectSchedule =
                 subjectScheduleRepository.findByTeacherIdAndClassTimeIsAndDayOfWeekIs(teacher.getId(),
-                                ClassTime.valueOf(classTime), DayOfWeek.valueOf(dayOfWeek))
+                                ClassTime.valueOf(classTime), ClassDay.valueOf(dayOfWeek))
                         .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
 
         var date = LocalDate.now();
 
         Attendance attendance;
 
-        var optionalAttendance = attendanceRepository.findByDate(date);
+        var optionalAttendance = attendanceRepository.findByDateAndSubjectSchedule(date, subjectSchedule);
 
         try {
             if (optionalAttendance.isEmpty()) {

@@ -2,16 +2,18 @@ package kg.inai.qrgenerator.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
-import kg.inai.qrgenerator.service.statistics.StatisticsService;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
+import kg.inai.qrgenerator.service.qr.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static kg.inai.qrgenerator.commons.constants.Endpoints.STATISTICS_URL;
+
 @RestController
-@RequestMapping("/statistics")
+@RequestMapping(STATISTICS_URL)
 @RequiredArgsConstructor
 @Tag(name = "Statistics API", description = "API для статистики")
 public class StatisticsController {

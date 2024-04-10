@@ -1,13 +1,15 @@
-package kg.inai.qrgenerator.service.user.dtos;
+package kg.inai.qrgenerator.service.qr.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class StudentDto {
 
     private String firstName;
 
@@ -15,5 +17,5 @@ public class UserDto {
 
     private String middleName;
 
-    private String role;
+    private Long absenceNum;
 }

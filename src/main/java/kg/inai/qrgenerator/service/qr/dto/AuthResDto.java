@@ -1,4 +1,4 @@
-package kg.inai.qrgenerator.controller.dtos;
+package kg.inai.qrgenerator.service.qr.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestResponse {
+public class AuthResDto {
 
-    private int code;
+    private Long userId;
 
-    private String message;
-
-    private Object body;
+    private String token;
 }

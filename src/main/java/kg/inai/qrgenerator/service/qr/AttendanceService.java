@@ -1,19 +1,21 @@
-package kg.inai.qrgenerator.service.attendance;
+package kg.inai.qrgenerator.service.qr;
 
+import kg.inai.qrgenerator.commons.enums.ClassDay;
+import kg.inai.qrgenerator.commons.enums.ClassTime;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
-import kg.inai.qrgenerator.controller.dtos.RestResponse;
+import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.entity.Attendance;
 import kg.inai.qrgenerator.entity.User;
 import kg.inai.qrgenerator.entity.repository.AttendanceRepository;
+import kg.inai.qrgenerator.entity.repository.SubjectScheduleRepository;
 import kg.inai.qrgenerator.entity.repository.UserRepository;
-import kg.inai.qrgenerator.service.attendance.dtos.AttendanceDto;
+import kg.inai.qrgenerator.service.qr.dto.AttendanceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
 
@@ -23,6 +25,7 @@ public class AttendanceService {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private final AttendanceRepository attendanceRepository;
+    private final SubjectScheduleRepository subjectScheduleRepository;
     private final UserRepository userRepository;
 
     public RestResponse attendTheClass(Long attendanceId, Long studentId) {
@@ -38,14 +41,40 @@ public class AttendanceService {
         return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
     }
 
-    public List<String> getClassAttendance(Long attendanceId) {
+    public RestResponse getClassAttendance(Long attendanceId) {
         var attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new NotFoundException(VALUE_NOT_FOUND));
 
-        return attendance.getStudents().stream()
+        var attendanceList = attendance.getStudents().stream()
                 .map(this::extractFullName)
                 .sorted()
                 .toList();
+
+        return RestResponse.builder()
+                .message(SUCCESS.getMessage())
+                .code(SUCCESS.getCode())
+                .body(attendanceList)
+                .build();
+    }
+
+    public RestResponse getClassAttendance(Long teacherId, String classTime, String dayOfWeek, LocalDate date) {
+        var subjectSchedule = subjectScheduleRepository.findByTeacherIdAndClassTimeIsAndDayOfWeekIs(teacherId,
+                        ClassTime.valueOf(classTime), ClassDay.valueOf(dayOfWeek))
+                .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
+
+        var attendance = attendanceRepository.findByDateAndSubjectSchedule(date, subjectSchedule)
+                .orElseThrow(() -> new NotFoundException(VALUE_NOT_FOUND));
+
+        var attendanceList = attendance.getStudents().stream()
+                .map(this::extractFullName)
+                .sorted()
+                .toList();
+
+        return RestResponse.builder()
+                .message(SUCCESS.getMessage())
+                .code(SUCCESS.getCode())
+                .body(attendanceList)
+                .build();
     }
 
     public RestResponse getAttendances(Long groupId, LocalDate from, LocalDate till) {
