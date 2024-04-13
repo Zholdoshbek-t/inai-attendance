@@ -31,6 +31,21 @@ public class GroupService {
         return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
     }
 
+    public RestResponse updateGroup(Long groupId, String name) {
+        if(groupRepository.existsByName(name)) {
+            throw new AlreadyExistsException(ALREADY_EXISTS);
+        }
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
+
+        group.setName(name);
+
+        groupRepository.save(group);
+
+        return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
+    }
+
     public RestResponse addStudentToGroup(Long studentId, Long groupId) {
         var user = userRepository.findById(studentId).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         var group = groupRepository.findById(groupId).orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));

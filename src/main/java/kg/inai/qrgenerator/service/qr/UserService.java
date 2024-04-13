@@ -42,6 +42,25 @@ public class UserService implements UserDetailsService {
         return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
     }
 
+    public RestResponse updateUser(Long id, UserDto userDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
+        if(!userDto.getFirstName().isEmpty()) {
+            user.setFirstName(userDto.getFirstName());
+        }
+        if(!userDto.getMiddleName().isEmpty()) {
+            user.setMiddleName(userDto.getMiddleName());
+        }
+        if(!userDto.getLastName().isEmpty()) {
+            user.setLastName(userDto.getLastName());
+        }
+
+        userRepository.save(user);
+
+        return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
+    }
+
     public RestResponse activateUser(Long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));

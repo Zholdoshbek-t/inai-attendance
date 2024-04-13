@@ -25,6 +25,14 @@ public class GroupController {
         return ResponseEntity.ok(groupService.createGroup(name));
     }
 
+    @Operation(summary = "Изменение названия группы")
+    @PutMapping("/{groupId}/{name}")
+    public ResponseEntity<RestResponse> updateGroup(@PathVariable Long groupId,
+                                                    @PathVariable String name) {
+
+        return ResponseEntity.ok(groupService.updateGroup(groupId, name));
+    }
+
     @Operation(summary = "Добавление студента по (айди студента, айди группы)")
     @PutMapping("/{studentId}/{groupId}")
     public ResponseEntity<RestResponse> addStudentToGroup(@PathVariable Long studentId,

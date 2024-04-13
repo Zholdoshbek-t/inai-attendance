@@ -23,18 +23,29 @@ public class UserController {
     @Operation(summary = "Создание пользователя")
     @PostMapping
     public ResponseEntity<RestResponse> createUser(@RequestBody UserDto userDto) {
+
         return ResponseEntity.ok(userService.createUser(userDto));
+    }
+
+    @Operation(summary = "Изменение фио пользователя")
+    @PutMapping("/{id}")
+    public ResponseEntity<RestResponse> updateUser(@PathVariable Long id,
+                                                   @RequestBody UserDto userDto) {
+
+        return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @Operation(summary = "Активация пользователя")
     @PutMapping("/activate/{id}")
     public ResponseEntity<RestResponse> activateUser(@PathVariable Long id) {
+
         return ResponseEntity.ok(userService.activateUser(id));
     }
 
     @Operation(summary = "Деактивация пользователя")
     @PutMapping("/deactivate/{id}")
     public ResponseEntity<RestResponse> deactivateUser(@PathVariable Long id) {
+
         return ResponseEntity.ok(userService.deactivateUser(id));
     }
 }

@@ -44,6 +44,24 @@ public class SubjectService {
         return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
     }
 
+    public RestResponse updateSubject(Long id, SubjectDto subjectDto) {
+        if (subjectRepository.existsByNameAndSemesterAndYear(subjectDto.getName(), subjectDto.getSemester(),
+                subjectDto.getYear())) {
+            throw new AlreadyExistsException(ALREADY_EXISTS);
+        }
+
+        var subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
+
+        subject.setName(subjectDto.getName());
+        subject.setYear(subjectDto.getYear());
+        subject.setSemester(subjectDto.getSemester());
+
+        subjectRepository.save(subject);
+
+        return RestResponse.builder().message(SUCCESS.getMessage()).code(SUCCESS.getCode()).build();
+    }
+
     public RestResponse createSubjectSchedule(SubjectScheduleDto subjectScheduleDto) {
         if(subjectScheduleRepository.existsBySubjectIdAndTeacherIdAndGroupIdAndClassTimeIs(
                 subjectScheduleDto.getSubjectId(),

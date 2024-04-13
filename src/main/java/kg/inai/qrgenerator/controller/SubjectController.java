@@ -23,12 +23,22 @@ public class SubjectController {
     @Operation(summary = "Создание предмета")
     @PostMapping
     public ResponseEntity<RestResponse> createSubject(@RequestBody SubjectDto subjectDto) {
+
         return ResponseEntity.ok(subjectService.createSubject(subjectDto));
+    }
+
+    @Operation(summary = "Изменение предмета")
+    @PutMapping("/{id}")
+    public ResponseEntity<RestResponse> updateSubject(@PathVariable Long id,
+                                                      @RequestBody SubjectDto subjectDto) {
+
+        return ResponseEntity.ok(subjectService.updateSubject(id, subjectDto));
     }
 
     @Operation(summary = "Создание определенной пары")
     @PostMapping("/schedule")
     public ResponseEntity<RestResponse> createSubjectSchedule(@RequestBody SubjectScheduleDto subjectScheduleDto) {
+
         return ResponseEntity.ok(subjectService.createSubjectSchedule(subjectScheduleDto));
     }
 
@@ -36,6 +46,7 @@ public class SubjectController {
     @PutMapping("/schedule/{id}")
     public ResponseEntity<RestResponse> updateSubjectSchedule(@PathVariable Long id,
                                                               @RequestBody SubjectScheduleDto subjectScheduleDto) {
+
         return ResponseEntity.ok(subjectService.updateSubjectSchedule(id, subjectScheduleDto));
     }
 }

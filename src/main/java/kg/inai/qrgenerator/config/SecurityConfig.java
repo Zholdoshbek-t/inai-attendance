@@ -11,8 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static kg.inai.qrgenerator.commons.constants.Endpoints.AUTH_URL;
-
+import static kg.inai.qrgenerator.commons.constants.Constants.PERMIT_URL;
 
 @Configuration
 @EnableMethodSecurity
@@ -27,7 +26,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("api/v1/auth/**")
+                        .requestMatchers(PERMIT_URL)
                         .permitAll()
                         .anyRequest()
                         .authenticated())
