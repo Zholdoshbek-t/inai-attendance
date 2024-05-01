@@ -3,12 +3,16 @@ package kg.inai.qrgenerator.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.inai.qrgenerator.controller.dto.RestResponse;
-import kg.inai.qrgenerator.service.qr.SubjectService;
-import kg.inai.qrgenerator.service.qr.dto.SubjectDto;
-import kg.inai.qrgenerator.service.qr.dto.SubjectScheduleDto;
+import kg.inai.qrgenerator.service.inai.subject.SubjectService;
+import kg.inai.qrgenerator.service.inai.subject.dto.ClassDto;
+import kg.inai.qrgenerator.service.inai.subject.dto.SubjectDto;
+import kg.inai.qrgenerator.service.inai.subject.dto.SubjectScheduleDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.SUBJECT_URL;
 
@@ -48,5 +52,27 @@ public class SubjectController {
                                                               @RequestBody SubjectScheduleDto subjectScheduleDto) {
 
         return ResponseEntity.ok(subjectService.updateSubjectSchedule(id, subjectScheduleDto));
+    }
+
+    @Operation(summary = "Получение списка пар по году и семестру")
+    @PutMapping("/{year}/{semester}")
+    public ResponseEntity<RestResponse> getAllByYearAndSemester(@PathVariable Integer year,
+                                                                @PathVariable Integer semester) {
+
+        return ResponseEntity.ok(subjectService.getAllByYearAndSemester(year, semester));
+    }
+
+    @Operation(summary = "Получение списка пар учителя на сегодня")
+    @GetMapping("/classes/today/{teacherId}")
+    public ResponseEntity<List<ClassDto>> getTeachersClassesToday(@PathVariable Long teacherId) {
+
+        return ResponseEntity.ok(subjectService.getTeachersClassesToday(teacherId));
+    }
+
+    @Operation(summary = "Получение списка пар учителя на неделю")
+    @GetMapping("/classes/week/{teacherId}")
+    public ResponseEntity<Map<String, List<ClassDto>>> getTeachersWeekClasses(@PathVariable Long teacherId) {
+
+        return ResponseEntity.ok(subjectService.getTeachersWeekClasses(teacherId));
     }
 }

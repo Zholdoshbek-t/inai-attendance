@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Table
@@ -19,6 +20,10 @@ public class Attendance {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private LocalDate date;
+
+    private LocalTime time;
 
     @ManyToOne
     @JoinColumn(
@@ -41,11 +46,9 @@ public class Attendance {
     )
     private Group group;
 
-    private LocalDate date;
-
     @ManyToMany
     @JoinTable(
-            name = "student_attendance",
+            name = "tb_student_attendance",
             joinColumns = @JoinColumn(name = "attendance_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )

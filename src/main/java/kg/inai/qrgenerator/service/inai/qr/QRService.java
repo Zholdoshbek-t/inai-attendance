@@ -1,28 +1,21 @@
-package kg.inai.qrgenerator.service.utils;
+package kg.inai.qrgenerator.service.inai.qr;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import kg.inai.qrgenerator.commons.enums.ClassDay;
-import kg.inai.qrgenerator.commons.enums.ClassTime;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
 import kg.inai.qrgenerator.commons.exception.ServerErrorException;
 import kg.inai.qrgenerator.entity.Attendance;
-import kg.inai.qrgenerator.entity.SubjectSchedule;
-import kg.inai.qrgenerator.entity.User;
 import kg.inai.qrgenerator.entity.repository.AttendanceRepository;
 import kg.inai.qrgenerator.entity.repository.SubjectScheduleRepository;
-import kg.inai.qrgenerator.entity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
 
 import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
 
@@ -30,17 +23,13 @@ import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
 @RequiredArgsConstructor
 public class QRService {
 
-    private final UserRepository userRepository;
     private final SubjectScheduleRepository subjectScheduleRepository;
     private final AttendanceRepository attendanceRepository;
 
-    public BufferedImage generateQRCode(String classTime, String dayOfWeek) {
-        var teacher = getAuthentication();
+    public BufferedImage generateQRCode(Long subjectScheduleId) {
 
-        var subjectSchedule =
-                subjectScheduleRepository.findByTeacherIdAndClassTimeIsAndDayOfWeekIs(teacher.getId(),
-                                ClassTime.valueOf(classTime), ClassDay.valueOf(dayOfWeek))
-                        .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
+        var subjectSchedule = subjectScheduleRepository.findById(subjectScheduleId)
+                .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
 
         var date = LocalDate.now();
 
@@ -52,9 +41,11 @@ public class QRService {
             if (optionalAttendance.isEmpty()) {
                 attendance = Attendance.builder()
                         .subjectSchedule(subjectSchedule)
-                        .teacher(teacher)
+                        .teacher(subjectSchedule.getTeacher())
                         .group(subjectSchedule.getGroup())
                         .date(date)
+                        .students(new HashSet<>())
+                        .time(LocalTime.now()) // 10 sek attendance
                         .build();
 
                 attendanceRepository.save(attendance);
@@ -71,14 +62,5 @@ public class QRService {
         } catch (WriterException e) {
             throw new ServerErrorException(INTERNAL_SERVER_ERROR);
         }
-    }
-
-    public User getAuthentication() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-//        return userRepository.findByUsername(authentication.getName())
-//                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
-        return userRepository.findByUsername("math.teacher")
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
     }
 }

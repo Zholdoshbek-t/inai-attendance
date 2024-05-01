@@ -1,4 +1,4 @@
-package kg.inai.qrgenerator.service.qr.dto;
+package kg.inai.qrgenerator.service.inai.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,4 +16,6 @@ public class UserDto {
     private String middleName;
 
     private String role;
+
+    private Long groupId;
 }

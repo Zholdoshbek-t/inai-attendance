@@ -1,4 +1,4 @@
-package kg.inai.qrgenerator.service.qr.dto;
+package kg.inai.qrgenerator.service.inai.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package kg.inai.qrgenerator.service.qr.dto;
+package kg.inai.qrgenerator.service.inai.subject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SubjectScheduleDto {
 
-    private String classTime;
+    private Long classTimeId;
 
     private Long subjectId;
 
@@ -17,5 +17,5 @@ public class SubjectScheduleDto {
 
     private Long teacherId;
 
-    private String dayOfWeek;
+    private Long classDayId;
 }

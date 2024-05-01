@@ -3,8 +3,9 @@ package kg.inai.qrgenerator.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.inai.qrgenerator.controller.dto.RestResponse;
-import kg.inai.qrgenerator.service.qr.UserService;
-import kg.inai.qrgenerator.service.qr.dto.UserDto;
+import kg.inai.qrgenerator.service.inai.user.UserService;
+import kg.inai.qrgenerator.service.inai.user.dto.TextDto;
+import kg.inai.qrgenerator.service.inai.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,27 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(userDto));
     }
 
+    @Operation(summary = "Создание студента")
+    @PostMapping("/teacher")
+    public ResponseEntity<RestResponse> createStudent(@RequestBody UserDto userDto) {
+
+        return ResponseEntity.ok(userService.createStudent(userDto));
+    }
+
     @Operation(summary = "Изменение фио пользователя")
-    @PutMapping("/{id}")
+    @PutMapping("/name/{id}")
     public ResponseEntity<RestResponse> updateUser(@PathVariable Long id,
                                                    @RequestBody UserDto userDto) {
 
         return ResponseEntity.ok(userService.updateUser(id, userDto));
+    }
+
+    @Operation(summary = "Изменение пароля пользователя")
+    @PutMapping("/password/{id}")
+    public ResponseEntity<RestResponse> updatePassword(@PathVariable Long id,
+                                                       @RequestBody TextDto textDto) {
+
+        return ResponseEntity.ok(userService.updatePassword(id, textDto));
     }
 
     @Operation(summary = "Активация пользователя")

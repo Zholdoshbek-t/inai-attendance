@@ -15,8 +15,10 @@ public enum SystemCode {
     VALUE_NOT_FOUND(1, "Объект не найден"),
     STUDENT_NOT_FOUND_IN_GROUP(1, "Группа не включает переданного студента"),
     ALREADY_EXISTS(2, "Уже существует"),
+    TEACHER_HAS_SUBJECT(2, "Учитель уже имеет существующую пару в данное время и день"),
     JWT_EXCEPTION(3, "JWT не актуален или не начинается с Bearer"),
     TOKEN_IS_EXPIRED(4, "Время JWT просрочено"),
+    LECTURE_TIME_EXPIRE(4, "Время актуальности QR-Кода просрочено"),
     INCORRECT_PASSWORD(4, "Неправильный пароль"),
     INTERNAL_SERVER_ERROR(999, "Внутренняя ошибка сервера");
 
