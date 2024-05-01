@@ -23,46 +23,46 @@ public class GroupController {
     private final GroupService groupService;
 
     @Operation(summary = "Получение списка студентов определенной группы")
-    @GetMapping("/{groupId}")
-    public ResponseEntity<List<StudentDto>> getGroupList(@PathVariable Long groupId) {
+    @GetMapping
+    public ResponseEntity<List<StudentDto>> getGroupList(@RequestParam Long groupId) {
 
         return ResponseEntity.ok(groupService.getGroupList(groupId));
     }
 
     @Operation(summary = "Получение списка студентов определенной группы с паролями")
-    @GetMapping("/admin/{groupId}")
-    public ResponseEntity<List<StudentDto>> getGroupListAdmin(@PathVariable Long groupId) {
+    @GetMapping("/admin")
+    public ResponseEntity<List<StudentDto>> getGroupListAdmin(@RequestParam Long groupId) {
 
         return ResponseEntity.ok(groupService.getGroupListAdmin(groupId));
     }
 
     @Operation(summary = "Создание группы")
-    @PostMapping("/{name}")
-    public ResponseEntity<RestResponse> createGroup(@PathVariable String name) {
+    @PostMapping
+    public ResponseEntity<RestResponse> createGroup(@RequestParam String name) {
 
         return ResponseEntity.ok(groupService.createGroup(name));
     }
 
     @Operation(summary = "Изменение названия группы")
-    @PutMapping("/{groupId}/{name}")
-    public ResponseEntity<RestResponse> updateGroupName(@PathVariable Long groupId,
-                                                    @PathVariable String name) {
+    @PutMapping
+    public ResponseEntity<RestResponse> updateGroupName(@RequestParam Long groupId,
+                                                    @RequestParam String name) {
 
         return ResponseEntity.ok(groupService.updateGroup(groupId, name));
     }
 
     @Operation(summary = "Добавление студента по (айди студента, айди группы)")
-    @PutMapping("/{studentId}/{groupId}")
-    public ResponseEntity<RestResponse> addStudentToGroup(@PathVariable Long studentId,
-                                                          @PathVariable Long groupId) {
+    @PutMapping
+    public ResponseEntity<RestResponse> addStudentToGroup(@RequestParam Long studentId,
+                                                          @RequestParam Long groupId) {
 
         return ResponseEntity.ok(groupService.addStudentToGroup(studentId, groupId));
     }
 
     @Operation(summary = "Удаление студента по (айди студента, айди группы)")
-    @DeleteMapping("/{studentId}/{groupId}")
-    public ResponseEntity<RestResponse> removeStudentFromGroup(@PathVariable Long studentId,
-                                                               @PathVariable Long groupId) {
+    @DeleteMapping
+    public ResponseEntity<RestResponse> removeStudentFromGroup(@RequestParam Long studentId,
+                                                               @RequestParam Long groupId) {
 
         return ResponseEntity.ok(groupService.removeStudentFromGroup(studentId, groupId));
     }

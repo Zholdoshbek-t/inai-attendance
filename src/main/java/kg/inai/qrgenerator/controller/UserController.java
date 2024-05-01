@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @Operation(summary = "Создание студента")
-    @PostMapping("/student/{groupId}")
-    public ResponseEntity<RestResponse> createStudent(@PathVariable Long groupId,
+    @PostMapping("/student")
+    public ResponseEntity<RestResponse> createStudent(@RequestParam Long groupId,
                                                       @RequestBody UserDto userDto) {
 
         return ResponseEntity.ok(userService.createStudent(groupId, userDto));
@@ -44,39 +44,39 @@ public class UserController {
     }
 
     @Operation(summary = "Изменение группы студента")
-    @PutMapping("/student/group/{studentId}/{groupId}")
-    public ResponseEntity<RestResponse> updateStudentGroup(@PathVariable Long studentId,
-                                                   @PathVariable Long groupId) {
+    @PutMapping("/student/group")
+    public ResponseEntity<RestResponse> updateStudentGroup(@RequestParam Long studentId,
+                                                   @RequestParam Long groupId) {
 
         return ResponseEntity.ok(userService.updateStudentGroup(studentId, groupId));
     }
 
     @Operation(summary = "Изменение фио пользователя")
-    @PutMapping("/name/{id}")
-    public ResponseEntity<RestResponse> updateUser(@PathVariable Long id,
+    @PutMapping("/name")
+    public ResponseEntity<RestResponse> updateUser(@RequestParam Long id,
                                                    @RequestBody UserDto userDto) {
 
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
     @Operation(summary = "Изменение пароля пользователя")
-    @PutMapping("/password/{id}")
-    public ResponseEntity<RestResponse> updatePassword(@PathVariable Long id,
+    @PutMapping("/password")
+    public ResponseEntity<RestResponse> updatePassword(@RequestParam Long id,
                                                        @RequestBody TextDto textDto) {
 
         return ResponseEntity.ok(userService.updatePassword(id, textDto));
     }
 
     @Operation(summary = "Активация пользователя")
-    @PutMapping("/activate/{id}")
-    public ResponseEntity<RestResponse> activateUser(@PathVariable Long id) {
+    @PutMapping("/activate")
+    public ResponseEntity<RestResponse> activateUser(@RequestParam Long id) {
 
         return ResponseEntity.ok(userService.activateUser(id));
     }
 
     @Operation(summary = "Деактивация пользователя")
-    @PutMapping("/deactivate/{id}")
-    public ResponseEntity<RestResponse> deactivateUser(@PathVariable Long id) {
+    @PutMapping("/deactivate")
+    public ResponseEntity<RestResponse> deactivateUser(@RequestParam Long id) {
 
         return ResponseEntity.ok(userService.deactivateUser(id));
     }

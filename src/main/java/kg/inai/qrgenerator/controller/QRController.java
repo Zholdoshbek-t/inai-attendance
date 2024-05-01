@@ -6,10 +6,7 @@ import kg.inai.qrgenerator.service.inai.qr.QRService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
 
@@ -24,8 +21,8 @@ public class QRController {
     private final QRService qrService;
 
     @Operation(summary = "Генерация QR кода по айди пары")
-    @GetMapping(value = "/{subjectScheduleId}", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<BufferedImage> generate(@PathVariable Long subjectScheduleId) {
+    @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<BufferedImage> generate(@RequestParam Long subjectScheduleId) {
 
         return ResponseEntity.ok(qrService.generateQRCode(subjectScheduleId));
     }

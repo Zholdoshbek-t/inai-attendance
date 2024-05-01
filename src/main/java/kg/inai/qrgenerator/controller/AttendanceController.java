@@ -21,16 +21,16 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @Operation(summary = "Регистрация студента в определенную запись пары по (айди пары, айди студента)")
-    @PutMapping("/{attendanceId}/{studentId}")
-    public ResponseEntity<RestResponse> attendTheClass(@PathVariable Long attendanceId,
-                                                       @PathVariable Long studentId) {
+    @PutMapping
+    public ResponseEntity<RestResponse> attendTheClass(@RequestParam Long attendanceId,
+                                                       @RequestParam Long studentId) {
 
         return ResponseEntity.ok(attendanceService.attendTheClass(attendanceId, studentId));
     }
 
     @Operation(summary = "Получение списка присутствующих на сегодняшней паре")
-    @GetMapping("/{subjectScheduleId}")
-    public ResponseEntity<List<String>> getClassAttendanceBySubjectSchedule(@PathVariable Long subjectScheduleId) {
+    @GetMapping
+    public ResponseEntity<List<String>> getClassAttendanceBySubjectSchedule(@RequestParam Long subjectScheduleId) {
 
         return ResponseEntity.ok(attendanceService.getCurrentClassAttendanceBySubjectSchedule(subjectScheduleId));
     }

@@ -32,8 +32,8 @@ public class SubjectController {
     }
 
     @Operation(summary = "Изменение предмета")
-    @PutMapping("/{id}")
-    public ResponseEntity<RestResponse> updateSubject(@PathVariable Long id,
+    @PutMapping
+    public ResponseEntity<RestResponse> updateSubject(@RequestParam Long id,
                                                       @RequestBody SubjectDto subjectDto) {
 
         return ResponseEntity.ok(subjectService.updateSubject(id, subjectDto));
@@ -47,31 +47,31 @@ public class SubjectController {
     }
 
     @Operation(summary = "Изменение определенной пары")
-    @PutMapping("/schedule/{id}")
-    public ResponseEntity<RestResponse> updateSubjectSchedule(@PathVariable Long id,
+    @PutMapping("/schedule")
+    public ResponseEntity<RestResponse> updateSubjectSchedule(@RequestParam Long id,
                                                               @RequestBody SubjectScheduleDto subjectScheduleDto) {
 
         return ResponseEntity.ok(subjectService.updateSubjectSchedule(id, subjectScheduleDto));
     }
 
     @Operation(summary = "Получение списка пар по году и семестру")
-    @PutMapping("/{year}/{semester}")
-    public ResponseEntity<List<String>> getAllByYearAndSemester(@PathVariable Integer year,
-                                                                @PathVariable Integer semester) {
+    @PutMapping
+    public ResponseEntity<List<String>> getAllByYearAndSemester(@RequestParam Integer year,
+                                                                @RequestParam Integer semester) {
 
         return ResponseEntity.ok(subjectService.getAllByYearAndSemester(year, semester));
     }
 
     @Operation(summary = "Получение списка пар учителя на сегодня")
-    @GetMapping("/classes/today/{teacherId}")
-    public ResponseEntity<List<ClassDto>> getTeachersClassesToday(@PathVariable Long teacherId) {
+    @GetMapping("/classes/today")
+    public ResponseEntity<List<ClassDto>> getTeachersClassesToday(@RequestParam Long teacherId) {
 
         return ResponseEntity.ok(subjectService.getTeachersClassesToday(teacherId));
     }
 
     @Operation(summary = "Получение списка пар учителя на неделю")
-    @GetMapping("/classes/week/{teacherId}")
-    public ResponseEntity<Map<String, List<ClassDto>>> getTeachersWeekClasses(@PathVariable Long teacherId) {
+    @GetMapping("/classes/week")
+    public ResponseEntity<Map<String, List<ClassDto>>> getTeachersWeekClasses(@RequestParam Long teacherId) {
 
         return ResponseEntity.ok(subjectService.getTeachersWeekClasses(teacherId));
     }
