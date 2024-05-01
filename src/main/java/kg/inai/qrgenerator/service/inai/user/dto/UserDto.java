@@ -14,8 +14,4 @@ public class UserDto {
     private String lastName;
 
     private String middleName;
-
-    private String role;
-
-    private Long groupId;
 }
