@@ -6,17 +6,17 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Utils {
 
-    public static String getFullName(User student) {
+    public static String getFullName(User user) {
 
         var strBuilder = new StringBuilder();
 
-        strBuilder.append(student.getLastName());
+        strBuilder.append(user.getLastName());
         strBuilder.append(" ");
-        strBuilder.append(student.getFirstName());
+        strBuilder.append(user.getFirstName());
 
-        if (!student.getMiddleName().isEmpty()) {
+        if (!user.getMiddleName().isEmpty()) {
             strBuilder.append(" ");
-            strBuilder.append(student.getMiddleName());
+            strBuilder.append(user.getMiddleName());
         }
 
         return strBuilder.toString();

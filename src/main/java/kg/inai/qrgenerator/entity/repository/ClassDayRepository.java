@@ -15,4 +15,6 @@ public interface ClassDayRepository extends JpaRepository<ClassDay, Long> {
 
     @Query("SELECT c from tb_class_day c order by c.dayOrder asc")
     List<ClassDay> getClassDays();
+
+    List<ClassDay> findAllByOrderByDayOrder();
 }

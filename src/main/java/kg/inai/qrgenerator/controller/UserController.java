@@ -21,18 +21,34 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "Создание пользователя")
-    @PostMapping
-    public ResponseEntity<RestResponse> createUser(@RequestBody UserDto userDto) {
+    @Operation(summary = "Создание админа")
+    @PostMapping("/admin")
+    public ResponseEntity<RestResponse> createAdmin(@RequestBody UserDto userDto) {
 
-        return ResponseEntity.ok(userService.createUser(userDto));
+        return ResponseEntity.ok(userService.createAdmin(userDto));
     }
 
     @Operation(summary = "Создание студента")
-    @PostMapping("/teacher")
-    public ResponseEntity<RestResponse> createStudent(@RequestBody UserDto userDto) {
+    @PostMapping("/student/{groupId}")
+    public ResponseEntity<RestResponse> createStudent(@PathVariable Long groupId,
+                                                      @RequestBody UserDto userDto) {
 
-        return ResponseEntity.ok(userService.createStudent(userDto));
+        return ResponseEntity.ok(userService.createStudent(groupId, userDto));
+    }
+
+    @Operation(summary = "Создание учителя")
+    @PostMapping("/admin")
+    public ResponseEntity<RestResponse> createTeacher(@RequestBody UserDto userDto) {
+
+        return ResponseEntity.ok(userService.createTeacher(userDto));
+    }
+
+    @Operation(summary = "Изменение группы студента")
+    @PutMapping("/student/group/{studentId}/{groupId}")
+    public ResponseEntity<RestResponse> updateStudentGroup(@PathVariable Long studentId,
+                                                   @PathVariable Long groupId) {
+
+        return ResponseEntity.ok(userService.updateStudentGroup(studentId, groupId));
     }
 
     @Operation(summary = "Изменение фио пользователя")

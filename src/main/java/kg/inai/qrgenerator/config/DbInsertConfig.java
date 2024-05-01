@@ -162,72 +162,25 @@ public class DbInsertConfig {
 
         subjectRepository.saveAll(List.of(math, db));
 
-//        var mathOneAin = SubjectSchedule.builder()
-//                .group(groupAin)
-//                .subject(math)
-//                .teacher(teacherMath)
-//                .dayOfWeek(MONDAY)
-//                .classTime(FIRST)
-//                .build();
-//
-//        var mathTwoAin = SubjectSchedule.builder()
-//                .group(groupAin)
-//                .subject(math)
-//                .teacher(teacherMath)
-//                .dayOfWeek(WEDNESDAY)
-//                .classTime(FIRST)
-//                .build();
-//
-//        var dbOneAin = SubjectSchedule.builder()
-//                .group(groupAin)
-//                .subject(db)
-//                .teacher(teacherDb)
-//                .dayOfWeek(TUESDAY)
-//                .classTime(FIRST)
-//                .build();
-//
-//        var dbTwoAin = SubjectSchedule.builder()
-//                .group(groupAin)
-//                .subject(db)
-//                .teacher(teacherDb)
-//                .dayOfWeek(THURSDAY)
-//                .classTime(FIRST)
-//                .build();
-//
-//        var mathOneWin = SubjectSchedule.builder()
-//                .group(groupWin)
-//                .subject(math)
-//                .teacher(teacherMath)
-//                .dayOfWeek(MONDAY)
-//                .classTime(SECOND)
-//                .build();
-//
-//        var mathTwoWin = SubjectSchedule.builder()
-//                .group(groupWin)
-//                .subject(math)
-//                .teacher(teacherMath)
-//                .dayOfWeek(WEDNESDAY)
-//                .classTime(SECOND)
-//                .build();
-//
-//        var dbOneWin = SubjectSchedule.builder()
-//                .group(groupWin)
-//                .subject(db)
-//                .teacher(teacherDb)
-//                .dayOfWeek(TUESDAY)
-//                .classTime(SECOND)
-//                .build();
-//
-//        var dbTwoWin = SubjectSchedule.builder()
-//                .group(groupWin)
-//                .subject(db)
-//                .teacher(teacherDb)
-//                .dayOfWeek(THURSDAY)
-//                .classTime(SECOND)
-//                .build();
-//
-//        subjectScheduleRepository.saveAll(List.of(
-//                mathOneAin, mathTwoAin, dbOneAin, dbTwoAin,
-//                mathOneWin, mathTwoWin, dbOneWin, dbTwoWin));
+        var mathOneAin = SubjectSchedule.builder()
+                .group(groupAin)
+                .subject(math)
+                .teacher(teacherMath)
+                .classDay(wednesday)
+                .classTime(fifthClass)
+                .build();
+
+        var mathTwoAin = SubjectSchedule.builder()
+                .group(groupAin)
+                .subject(math)
+                .teacher(teacherMath)
+                .classDay(wednesday)
+                .classTime(fourthClass)
+                .build();
+
+
+
+        subjectScheduleRepository.saveAll(List.of(
+                mathOneAin, mathTwoAin));
     }
 }

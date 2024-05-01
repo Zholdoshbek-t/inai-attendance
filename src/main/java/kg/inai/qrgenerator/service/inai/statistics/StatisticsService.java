@@ -25,7 +25,7 @@ public class StatisticsService {
     private final GroupRepository groupRepository;
     private final AttendanceRepository attendanceRepository;
 
-    public RestResponse getByFullName(Long groupId, LocalDate from, LocalDate till) {
+    public List<StudentDto> getByFullName(Long groupId, LocalDate from, LocalDate till) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -35,7 +35,7 @@ public class StatisticsService {
         return studentsSortedByFullName(group.getStudents(), attendances.size(), groupId);
     }
 
-    public RestResponse getByFullNameSubjectId(Long groupId, LocalDate from, LocalDate till, Long subjectId) {
+    public List<StudentDto> getByFullNameSubjectId(Long groupId, LocalDate from, LocalDate till, Long subjectId) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -45,17 +45,15 @@ public class StatisticsService {
         return studentsSortedByFullName(group.getStudents(), attendances.size(), groupId);
     }
 
-    private RestResponse studentsSortedByFullName(List<User> students, Integer attendancesSize, Long groupId) {
+    private List<StudentDto> studentsSortedByFullName(List<User> students, Integer attendancesSize, Long groupId) {
 
-        var result = students.stream()
+        return students.stream()
                 .map(student -> mapToStudentDto(student, attendancesSize, groupId))
                 .sorted(Comparator.comparing(StudentDto::getFullName))
                 .toList();
-
-        return ResponseMapper.responseSuccess(result);
     }
 
-    public RestResponse getByScoreAsc(Long groupId, LocalDate from, LocalDate till) {
+    public List<StudentDto> getByScoreAsc(Long groupId, LocalDate from, LocalDate till) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -65,7 +63,7 @@ public class StatisticsService {
         return studentsSortedByScoreAsc(group.getStudents(), attendances.size(), groupId);
     }
 
-    public RestResponse getByScoreAscSubjectId(Long groupId, LocalDate from,
+    public List<StudentDto> getByScoreAscSubjectId(Long groupId, LocalDate from,
                                                LocalDate till, Long subjectId) {
 
         var group = groupRepository.findById(groupId)
@@ -76,17 +74,15 @@ public class StatisticsService {
         return studentsSortedByScoreAsc(group.getStudents(), attendances.size(), groupId);
     }
 
-    private RestResponse studentsSortedByScoreAsc(List<User> students, Integer attendancesSize, Long groupId) {
+    private List<StudentDto> studentsSortedByScoreAsc(List<User> students, Integer attendancesSize, Long groupId) {
 
-        var result = students.stream()
+        return students.stream()
                 .map(student -> mapToStudentDto(student, attendancesSize, groupId))
                 .sorted(Comparator.comparing(StudentDto::getAbsenceNum))
                 .toList();
-
-        return ResponseMapper.responseSuccess(result);
     }
 
-    public RestResponse getByScoreDesc(Long groupId, LocalDate from, LocalDate till) {
+    public List<StudentDto> getByScoreDesc(Long groupId, LocalDate from, LocalDate till) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -96,7 +92,7 @@ public class StatisticsService {
         return studentsSortedByScoreDesc(group.getStudents(), attendances.size(), groupId);
     }
 
-    public RestResponse getByScoreDescSubjectId(Long groupId, LocalDate from,
+    public List<StudentDto> getByScoreDescSubjectId(Long groupId, LocalDate from,
                                                 LocalDate till, Long subjectId) {
 
         var group = groupRepository.findById(groupId)
@@ -107,14 +103,12 @@ public class StatisticsService {
         return studentsSortedByScoreDesc(group.getStudents(), attendances.size(), groupId);
     }
 
-    private RestResponse studentsSortedByScoreDesc(List<User> students, Integer attendancesSize, Long groupId) {
+    private List<StudentDto> studentsSortedByScoreDesc(List<User> students, Integer attendancesSize, Long groupId) {
 
-        var result = students.stream()
+        return students.stream()
                 .map(student -> mapToStudentDto(student, attendancesSize, groupId))
                 .sorted(Comparator.comparing(StudentDto::getAbsenceNum).reversed())
                 .toList();
-
-        return ResponseMapper.responseSuccess(result);
     }
 
     private List<Attendance> getByGroupIdBetweenDates(Long groupId, LocalDate from, LocalDate till) {

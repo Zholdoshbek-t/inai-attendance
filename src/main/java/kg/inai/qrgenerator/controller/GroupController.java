@@ -67,7 +67,7 @@ public class GroupController {
         return ResponseEntity.ok(groupService.removeStudentFromGroup(studentId, groupId));
     }
 
-    @Operation(summary = "Получение списка групп")
+    @Operation(summary = "Получение списка групп со студентами")
     @GetMapping("/all")
     public ResponseEntity<List<GroupDto>> getGroups() {
 

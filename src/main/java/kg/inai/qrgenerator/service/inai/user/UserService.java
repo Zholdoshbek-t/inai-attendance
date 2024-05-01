@@ -26,31 +26,38 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
 
-    public RestResponse createUser(UserDto userDto) {
-        var username = userDto.getFirstName() + "." + userDto.getLastName();
+    public RestResponse createAdmin(UserDto userDto) {
 
-        if(userRepository.existsByUsername(username)) {
-            username += User.duplicateId.getAndIncrement();
-        }
+        var student = createUser(userDto, Role.ADMIN);
 
-        var user = User.builder()
-                .username(username)
-                .password(username + generateRandomDigits())
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
-                .middleName(userDto.getMiddleName() != null ? userDto.getMiddleName() : "")
-                .valid(true)
-                .role(Role.valueOf(userDto.getRole()))
-                .build();
-
-        userRepository.save(user);
+        userRepository.save(student);
 
         return ResponseMapper.responseSuccess();
     }
 
-    public RestResponse createStudent(UserDto userDto) {
-        var group = groupRepository.findById(userDto.getGroupId())
+    public RestResponse createTeacher(UserDto userDto) {
+
+        var student = createUser(userDto, Role.TEACHER);
+
+        userRepository.save(student);
+
+        return ResponseMapper.responseSuccess();
+    }
+
+    public RestResponse createStudent(Long groupId, UserDto userDto) {
+
+        var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
+
+        var student = createUser(userDto, Role.STUDENT);
+        student.setGroup(group);
+
+        userRepository.save(student);
+
+        return ResponseMapper.responseSuccess();
+    }
+
+    private User createUser(UserDto userDto, Role role) {
 
         var username = userDto.getFirstName() + "." + userDto.getLastName();
 
@@ -58,16 +65,26 @@ public class UserService implements UserDetailsService {
             username += User.duplicateId.getAndIncrement();
         }
 
-        var user = User.builder()
+        return User.builder()
                 .username(username)
                 .password(username + generateRandomDigits())
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .middleName(userDto.getMiddleName() != null ? userDto.getMiddleName() : "")
                 .valid(true)
-                .group(group)
-                .role(Role.valueOf(userDto.getRole()))
+                .role(role)
                 .build();
+    }
+
+    public RestResponse updateStudentGroup(Long studentId, Long groupId) {
+
+        var user = userRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+
+        var group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
+
+        user.setGroup(group);
 
         userRepository.save(user);
 
@@ -75,7 +92,8 @@ public class UserService implements UserDetailsService {
     }
 
     public RestResponse updateUser(Long id, UserDto userDto) {
-        User user = userRepository.findById(id)
+
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         if(!userDto.getFirstName().isEmpty()) {
@@ -94,7 +112,8 @@ public class UserService implements UserDetailsService {
     }
 
     public RestResponse updatePassword(Long id, TextDto textDto) {
-        User user = userRepository.findById(id)
+
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
         if(!textDto.getText().isEmpty()) {
@@ -107,6 +126,7 @@ public class UserService implements UserDetailsService {
     }
 
     public RestResponse activateUser(Long id) {
+
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
@@ -117,6 +137,7 @@ public class UserService implements UserDetailsService {
     }
 
     public RestResponse deactivateUser(Long id) {
+
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
 
@@ -128,6 +149,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         var userDb = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         return new org.springframework.security.core.userdetails
@@ -135,6 +157,7 @@ public class UserService implements UserDetailsService {
     }
 
     public String generateRandomDigits() {
+
         var random = new Random();
         StringBuilder sb = new StringBuilder();
 
