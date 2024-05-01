@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @Operation(summary = "Создание учителя")
-    @PostMapping("/admin")
+    @PostMapping("/teacher")
     public ResponseEntity<RestResponse> createTeacher(@RequestBody UserDto userDto) {
 
         return ResponseEntity.ok(userService.createTeacher(userDto));
