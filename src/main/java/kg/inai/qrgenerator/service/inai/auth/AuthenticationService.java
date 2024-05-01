@@ -29,6 +29,7 @@ public class AuthenticationService {
         return AuthResDto.builder()
                 .userId(user.getId())
                 .token(jwtProvider.generateToken(user))
+                .role(user.getRole().name())
                 .build();
     }
 }
