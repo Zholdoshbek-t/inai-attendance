@@ -44,7 +44,7 @@ public class GroupController {
     }
 
     @Operation(summary = "Изменение названия группы")
-    @PutMapping
+    @PutMapping("/name")
     public ResponseEntity<RestResponse> updateGroupName(@RequestParam Long groupId,
                                                     @RequestParam String name) {
 
@@ -52,7 +52,7 @@ public class GroupController {
     }
 
     @Operation(summary = "Добавление студента по (айди студента, айди группы)")
-    @PutMapping
+    @PutMapping("/add/student")
     public ResponseEntity<RestResponse> addStudentToGroup(@RequestParam Long studentId,
                                                           @RequestParam Long groupId) {
 
@@ -60,7 +60,7 @@ public class GroupController {
     }
 
     @Operation(summary = "Удаление студента по (айди студента, айди группы)")
-    @DeleteMapping
+    @DeleteMapping("/remove/student")
     public ResponseEntity<RestResponse> removeStudentFromGroup(@RequestParam Long studentId,
                                                                @RequestParam Long groupId) {
 

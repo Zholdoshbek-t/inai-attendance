@@ -55,7 +55,7 @@ public class SubjectController {
     }
 
     @Operation(summary = "Получение списка пар по году и семестру")
-    @PutMapping
+    @PutMapping("/classes-by-year-semester")
     public ResponseEntity<List<String>> getAllByYearAndSemester(@RequestParam Integer year,
                                                                 @RequestParam Integer semester) {
 
