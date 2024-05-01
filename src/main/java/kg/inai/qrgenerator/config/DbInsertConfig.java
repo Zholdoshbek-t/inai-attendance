@@ -17,8 +17,7 @@ import java.util.List;
 import static kg.inai.qrgenerator.commons.enums.ClassDay.*;
 import static kg.inai.qrgenerator.commons.enums.ClassTime.FIRST;
 import static kg.inai.qrgenerator.commons.enums.ClassTime.SECOND;
-import static kg.inai.qrgenerator.commons.enums.Role.STUDENT;
-import static kg.inai.qrgenerator.commons.enums.Role.TEACHER;
+import static kg.inai.qrgenerator.commons.enums.Role.*;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,6 +37,21 @@ public class DbInsertConfig {
 
     @PostConstruct
     public void init() {
+
+        if(!userRepository.existsByUsername("admin")) {
+            var admin = User.builder()
+                    .firstName("ADMIN")
+                    .lastName("ADMIN")
+                    .middleName("ADMIN")
+                    .username("admin")
+                    .password("admin")
+                    .valid(true)
+                    .role(ADMIN)
+                    .build();
+
+            userRepository.save(admin);
+        }
+
         var monday = ClassDay.builder()
                 .dayEng("MONDAY")
                 .dayRus("Понедельник")
@@ -74,7 +88,13 @@ public class DbInsertConfig {
                 .dayOrder(1)
                 .build();
 
-        classDayRepository.saveAll(List.of(monday, tuesday, wednesday, thursday, friday, saturday));
+        var classDays = List.of(monday, tuesday, wednesday, thursday, friday, saturday);
+
+        for(ClassDay classDay: classDays) {
+            if(!classDayRepository.existsByDayEng(classDay.getDayEng())) {
+                classDayRepository.save(classDay);
+            }
+        }
 
         var firstClass = ClassTime.builder().classHours(8).classMinutes(0).build();
         var secondClass = ClassTime.builder().classHours(9).classMinutes(30).build();
@@ -86,101 +106,14 @@ public class DbInsertConfig {
         var eighthClass = ClassTime.builder().classHours(18).classMinutes(30).build();
         var ninthClass = ClassTime.builder().classHours(20).classMinutes(0).build();
 
-        classTimeRepository.saveAll(List.of(
-                firstClass, secondClass, thirdClass, fourthClass, fifthClass,
-                sixthClass, seventhClass, eighthClass, ninthClass
-        ));
+        var classTimes = List.of(firstClass, secondClass, thirdClass, fourthClass, fifthClass,
+                sixthClass, seventhClass, eighthClass, ninthClass);
 
-        var groupAin = Group.builder().name("АИН-1-20").build();
-        var groupWin = Group.builder().name("ВИН-1-20").build();
-
-        groupRepository.saveAll(List.of(groupAin, groupWin));
-
-        var teacherMath = User.builder()
-                .firstName("Айбек")
-                .lastName("Айбек")
-                .middleName("Айбек")
-                    .username("math.teacher")
-                .password("123456")
-                .valid(true)
-                .role(TEACHER)
-                .build();
-
-        var teacherDb = User.builder()
-                .firstName("Салтанат")
-                .lastName("Салтанат")
-                .middleName("Салтанат")
-                .username("db.teacher")
-                .password("123456")
-                .valid(true)
-                .role(TEACHER)
-                .build();
-
-        List<User> users = new ArrayList<>(List.of(teacherMath, teacherDb));
-
-        for(int i = 0; i < 10; i++) {
-            var studentAin = User.builder()
-                    .firstName("Азамат")
-                    .lastName("Азамат")
-                    .middleName("Азамат")
-                    .username("student.ain" + i)
-                    .password("123456")
-                    .valid(true)
-                    .role(STUDENT)
-                    .build();
-
-            users.add(studentAin);
+        for(ClassTime classTime: classTimes) {
+            if(!classTimeRepository.existsByClassHoursAndClassMinutes(classTime.getClassHours(),
+                    classTime.getClassMinutes())) {
+                classTimeRepository.save(classTime);
+            }
         }
-
-        for(int i = 0; i < 10; i++) {
-            var studentWin = User.builder()
-                    .firstName("Байэл")
-                    .lastName("Байэл")
-                    .middleName("Байэл")
-                    .username("student.win" + i)
-                    .password("123456")
-                    .valid(true)
-                    .role(STUDENT)
-                    .build();
-
-            users.add(studentWin);
-        }
-
-        userRepository.saveAll(users);
-
-        var math = Subject.builder()
-                .name("ЯП 1")
-                .year(2024)
-                .semester(1)
-                .build();
-
-        var db = Subject.builder()
-                .name("Базы данных 1")
-                .year(2024)
-                .semester(1)
-                .build();
-
-        subjectRepository.saveAll(List.of(math, db));
-
-        var mathOneAin = SubjectSchedule.builder()
-                .group(groupAin)
-                .subject(math)
-                .teacher(teacherMath)
-                .classDay(wednesday)
-                .classTime(fifthClass)
-                .build();
-
-        var mathTwoAin = SubjectSchedule.builder()
-                .group(groupAin)
-                .subject(math)
-                .teacher(teacherMath)
-                .classDay(wednesday)
-                .classTime(fourthClass)
-                .build();
-
-
-
-        subjectScheduleRepository.saveAll(List.of(
-                mathOneAin, mathTwoAin));
     }
 }

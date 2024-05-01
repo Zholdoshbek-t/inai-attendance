@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface ClassTimeRepository extends JpaRepository<ClassTime, Long> {
 
+    Boolean existsByClassHoursAndClassMinutes(Integer hours, Integer minutes);
+
     List<ClassTime> findAllByOrderByClassHoursAscClassMinutesAsc();
 }

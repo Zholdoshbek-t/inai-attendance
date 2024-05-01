@@ -13,6 +13,8 @@ public interface ClassDayRepository extends JpaRepository<ClassDay, Long> {
 
     Optional<ClassDay> findByDayEng(String dayEng);
 
+    Boolean existsByDayEng(String name);
+
     @Query("SELECT c from tb_class_day c order by c.dayOrder asc")
     List<ClassDay> getClassDays();
 

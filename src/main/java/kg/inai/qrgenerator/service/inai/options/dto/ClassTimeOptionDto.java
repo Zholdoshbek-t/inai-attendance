@@ -13,7 +13,5 @@ public class ClassTimeOptionDto {
 
     private Long id;
 
-    private String hours;
-
-    private String minutes;
+    private String time;
 }

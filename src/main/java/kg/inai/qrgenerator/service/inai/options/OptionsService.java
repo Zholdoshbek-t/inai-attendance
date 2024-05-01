@@ -62,8 +62,7 @@ public class OptionsService {
 
                     return ClassTimeOptionDto.builder()
                             .id(classTime.getId())
-                            .hours(hours)
-                            .minutes(minutes)
+                            .time(hours + ":" + minutes)
                             .build();
                 })
                 .toList();
