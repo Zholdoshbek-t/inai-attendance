@@ -56,7 +56,7 @@ public class SubjectController {
 
     @Operation(summary = "Получение списка пар по году и семестру")
     @PutMapping("/{year}/{semester}")
-    public ResponseEntity<RestResponse> getAllByYearAndSemester(@PathVariable Integer year,
+    public ResponseEntity<List<String>> getAllByYearAndSemester(@PathVariable Integer year,
                                                                 @PathVariable Integer semester) {
 
         return ResponseEntity.ok(subjectService.getAllByYearAndSemester(year, semester));

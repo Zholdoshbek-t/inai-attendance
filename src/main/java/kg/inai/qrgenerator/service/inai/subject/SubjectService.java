@@ -143,13 +143,11 @@ public class SubjectService {
         return ResponseMapper.responseSuccess();
     }
 
-    public RestResponse getAllByYearAndSemester(Integer year, Integer semester) {
+    public List<String> getAllByYearAndSemester(Integer year, Integer semester) {
 
-        var subjects = subjectRepository.findAllByYearAndSemesterOrderByNameAsc(year, semester).stream()
+        return subjectRepository.findAllByYearAndSemesterOrderByNameAsc(year, semester).stream()
                 .map(Subject::getName)
                 .toList();
-
-        return ResponseMapper.responseSuccess(subjects);
     }
 
     public List<ClassDto> getTeachersClassesToday(Long teacherId) {

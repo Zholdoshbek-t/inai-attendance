@@ -14,12 +14,4 @@ public class ResponseMapper {
                 .code(SUCCESS.getCode())
                 .build();
     }
-
-    public static RestResponse responseSuccess(Object body) {
-        return RestResponse.builder()
-                .message(SUCCESS.getMessage())
-                .code(SUCCESS.getCode())
-                .body(body)
-                .build();
-    }
 }

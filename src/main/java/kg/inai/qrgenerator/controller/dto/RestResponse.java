@@ -16,6 +16,4 @@ public class RestResponse {
     private int code;
 
     private String message;
-
-    private Object body;
 }
