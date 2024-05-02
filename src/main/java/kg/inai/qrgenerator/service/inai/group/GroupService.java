@@ -27,6 +27,7 @@ public class GroupService {
     private final UserRepository userRepository;
 
     public List<StudentDto> getGroupList(Long groupId) {
+
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
@@ -53,6 +54,7 @@ public class GroupService {
     }
 
     public List<StudentAdminDto> getGroupListAdmin(Long groupId) {
+
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
@@ -80,6 +82,7 @@ public class GroupService {
     }
 
     public RestResponse createGroup(String name) {
+
         if(groupRepository.existsByName(name)) {
             throw new AlreadyExistsException(ALREADY_EXISTS);
         }
@@ -92,6 +95,7 @@ public class GroupService {
     }
 
     public RestResponse updateGroup(Long groupId, String name) {
+
         if(groupRepository.existsByName(name)) {
             throw new AlreadyExistsException(ALREADY_EXISTS);
         }
@@ -107,6 +111,7 @@ public class GroupService {
     }
 
     public RestResponse addStudentToGroup(Long studentId, Long groupId) {
+
         var user = userRepository.findById(studentId).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         var group = groupRepository.findById(groupId).orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
@@ -125,6 +130,7 @@ public class GroupService {
     }
 
     public RestResponse removeStudentFromGroup(Long studentId, Long groupId) {
+
         var user = userRepository.findById(studentId).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         var group = groupRepository.findById(groupId).orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
@@ -132,7 +138,7 @@ public class GroupService {
             group.setStudents(new ArrayList<>());
         }
 
-        if(group.getStudents().contains(user)) {
+        if(!group.getStudents().contains(user)) {
             throw new NotFoundException(STUDENT_NOT_FOUND_IN_GROUP);
         }
 
@@ -143,6 +149,7 @@ public class GroupService {
     }
 
     public List<GroupDto> getGroups() {
+
         return groupRepository.findAll().stream()
                 .map(group -> GroupDto.builder().id(group.getId()).name(group.getName()).build())
                 .sorted()
