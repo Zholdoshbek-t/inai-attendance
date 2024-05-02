@@ -1,10 +1,11 @@
 package kg.inai.qrgenerator.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.service.inai.auth.AuthenticationService;
 import kg.inai.qrgenerator.service.inai.auth.dto.AuthReqDto;
 import kg.inai.qrgenerator.service.inai.auth.dto.AuthResDto;
+import kg.inai.qrgenerator.service.inai.auth.dto.AuthResStudentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,15 @@ public class AuthController {
 
     private final AuthenticationService authService;
 
+    @Operation(summary = "Авторизация учителя/админа")
     @PostMapping("/login")
     public ResponseEntity<AuthResDto> login(@RequestBody AuthReqDto authReqDto) {
         return ResponseEntity.ok(authService.login(authReqDto));
+    }
+
+    @Operation(summary = "Авторизация студента")
+    @PostMapping("/login/student")
+    public ResponseEntity<AuthResStudentDto> loginStudent(@RequestBody AuthReqDto authReqDto) {
+        return ResponseEntity.ok(authService.loginStudent(authReqDto));
     }
 }

@@ -65,4 +65,11 @@ public class OptionsController {
 
         return ResponseEntity.ok(optionsService.getGroups());
     }
+
+    @Operation(summary = "Получение списка студентов")
+    @GetMapping("/students")
+    public ResponseEntity<List<StudentOptionDto>> getStudents() {
+
+        return ResponseEntity.ok(optionsService.getStudents());
+    }
 }

@@ -4,9 +4,11 @@ import kg.inai.qrgenerator.commons.exception.AlreadyExistsException;
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
 import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.entity.ClassDay;
+import kg.inai.qrgenerator.entity.Group;
 import kg.inai.qrgenerator.entity.SubjectSchedule;
 import kg.inai.qrgenerator.entity.repository.*;
 import kg.inai.qrgenerator.service.inai.subject.dto.ClassDto;
+import kg.inai.qrgenerator.service.inai.subject.dto.StudentClassDto;
 import kg.inai.qrgenerator.service.inai.subject.dto.SubjectDto;
 import kg.inai.qrgenerator.entity.Subject;
 import kg.inai.qrgenerator.service.inai.subject.dto.SubjectScheduleDto;
@@ -175,6 +177,16 @@ public class SubjectService {
         }
 
         return dayClassesDto;
+    }
+
+    public Map<String, List<StudentClassDto>> getStudentsClasses(Group groupId) {
+
+        LocalDate.now().getDayOfWeek().name();
+        return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(LocalDate.now().getDayOfWeek().name());
     }
 
     private List<ClassDto> mapToClassDtoList(Long teacherId, Long classDayId) {

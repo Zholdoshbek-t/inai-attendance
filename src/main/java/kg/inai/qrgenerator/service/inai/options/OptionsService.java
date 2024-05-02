@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,7 +18,6 @@ public class OptionsService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final SubjectRepository subjectRepository;
-    private final SubjectScheduleRepository subjectScheduleRepository;
     private final ClassDayRepository classDayRepository;
     private final ClassTimeRepository classTimeRepository;
 
@@ -89,4 +89,15 @@ public class OptionsService {
                 .toList();
     }
 
+    public List<StudentOptionDto> getStudents() {
+
+        return userRepository.findAll().stream()
+                .filter(user -> user.getRole().equals(Role.STUDENT))
+                .map(user -> StudentOptionDto.builder()
+                        .id(user.getId())
+                        .name(Utils.getFullName(user))
+                        .build())
+                .sorted(Comparator.comparing(StudentOptionDto::getName))
+                .toList();
+    }
 }
