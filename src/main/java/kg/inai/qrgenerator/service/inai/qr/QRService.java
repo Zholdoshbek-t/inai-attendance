@@ -45,7 +45,7 @@ public class QRService {
                         .group(subjectSchedule.getGroup())
                         .date(date)
                         .students(new HashSet<>())
-                        .time(LocalTime.now()) // 10 sek attendance
+                        .time(LocalTime.now())
                         .build();
 
                 attendanceRepository.save(attendance);

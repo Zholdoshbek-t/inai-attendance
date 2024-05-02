@@ -1,13 +1,11 @@
 package kg.inai.qrgenerator.service.inai.statistics;
 
 import kg.inai.qrgenerator.commons.exception.NotFoundException;
-import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.entity.Attendance;
 import kg.inai.qrgenerator.entity.User;
 import kg.inai.qrgenerator.entity.repository.AttendanceRepository;
 import kg.inai.qrgenerator.entity.repository.GroupRepository;
-import kg.inai.qrgenerator.service.inai.statistics.dto.StudentDto;
-import kg.inai.qrgenerator.service.utils.ResponseMapper;
+import kg.inai.qrgenerator.service.inai.statistics.dto.StudentStatisticsDto;
 import kg.inai.qrgenerator.service.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,7 @@ public class StatisticsService {
     private final GroupRepository groupRepository;
     private final AttendanceRepository attendanceRepository;
 
-    public List<StudentDto> getByFullName(Long groupId, LocalDate from, LocalDate till) {
+    public List<StudentStatisticsDto> getByFullName(Long groupId, LocalDate from, LocalDate till) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -35,7 +33,7 @@ public class StatisticsService {
         return studentsSortedByFullName(group.getStudents(), attendances.size(), groupId);
     }
 
-    public List<StudentDto> getByFullNameSubjectId(Long groupId, LocalDate from, LocalDate till, Long subjectId) {
+    public List<StudentStatisticsDto> getByFullNameSubjectId(Long groupId, LocalDate from, LocalDate till, Long subjectId) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -45,15 +43,15 @@ public class StatisticsService {
         return studentsSortedByFullName(group.getStudents(), attendances.size(), groupId);
     }
 
-    private List<StudentDto> studentsSortedByFullName(List<User> students, Integer attendancesSize, Long groupId) {
+    private List<StudentStatisticsDto> studentsSortedByFullName(List<User> students, Integer attendancesSize, Long groupId) {
 
         return students.stream()
                 .map(student -> mapToStudentDto(student, attendancesSize, groupId))
-                .sorted(Comparator.comparing(StudentDto::getFullName))
+                .sorted(Comparator.comparing(StudentStatisticsDto::getFullName))
                 .toList();
     }
 
-    public List<StudentDto> getByScoreAsc(Long groupId, LocalDate from, LocalDate till) {
+    public List<StudentStatisticsDto> getByScoreAsc(Long groupId, LocalDate from, LocalDate till) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -63,7 +61,7 @@ public class StatisticsService {
         return studentsSortedByScoreAsc(group.getStudents(), attendances.size(), groupId);
     }
 
-    public List<StudentDto> getByScoreAscSubjectId(Long groupId, LocalDate from,
+    public List<StudentStatisticsDto> getByScoreAscSubjectId(Long groupId, LocalDate from,
                                                LocalDate till, Long subjectId) {
 
         var group = groupRepository.findById(groupId)
@@ -74,15 +72,15 @@ public class StatisticsService {
         return studentsSortedByScoreAsc(group.getStudents(), attendances.size(), groupId);
     }
 
-    private List<StudentDto> studentsSortedByScoreAsc(List<User> students, Integer attendancesSize, Long groupId) {
+    private List<StudentStatisticsDto> studentsSortedByScoreAsc(List<User> students, Integer attendancesSize, Long groupId) {
 
         return students.stream()
                 .map(student -> mapToStudentDto(student, attendancesSize, groupId))
-                .sorted(Comparator.comparing(StudentDto::getAbsenceNum))
+                .sorted(Comparator.comparing(StudentStatisticsDto::getAbsenceNum))
                 .toList();
     }
 
-    public List<StudentDto> getByScoreDesc(Long groupId, LocalDate from, LocalDate till) {
+    public List<StudentStatisticsDto> getByScoreDesc(Long groupId, LocalDate from, LocalDate till) {
 
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
@@ -92,7 +90,7 @@ public class StatisticsService {
         return studentsSortedByScoreDesc(group.getStudents(), attendances.size(), groupId);
     }
 
-    public List<StudentDto> getByScoreDescSubjectId(Long groupId, LocalDate from,
+    public List<StudentStatisticsDto> getByScoreDescSubjectId(Long groupId, LocalDate from,
                                                 LocalDate till, Long subjectId) {
 
         var group = groupRepository.findById(groupId)
@@ -103,11 +101,11 @@ public class StatisticsService {
         return studentsSortedByScoreDesc(group.getStudents(), attendances.size(), groupId);
     }
 
-    private List<StudentDto> studentsSortedByScoreDesc(List<User> students, Integer attendancesSize, Long groupId) {
+    private List<StudentStatisticsDto> studentsSortedByScoreDesc(List<User> students, Integer attendancesSize, Long groupId) {
 
         return students.stream()
                 .map(student -> mapToStudentDto(student, attendancesSize, groupId))
-                .sorted(Comparator.comparing(StudentDto::getAbsenceNum).reversed())
+                .sorted(Comparator.comparing(StudentStatisticsDto::getAbsenceNum).reversed())
                 .toList();
     }
 
@@ -135,11 +133,11 @@ public class StatisticsService {
                 .toList();
     }
 
-    private StudentDto mapToStudentDto(User student, Integer attendanceByGroup, Long groupId) {
+    private StudentStatisticsDto mapToStudentDto(User student, Integer attendanceByGroup, Long groupId) {
 
         var studentAttendanceNum = attendanceRepository.getStudentsWithAttendance(groupId, student.getId());
 
-        return StudentDto.builder()
+        return StudentStatisticsDto.builder()
                 .fullName(Utils.getFullName(student))
                 .absenceNum(attendanceByGroup - studentAttendanceNum)
                 .build();

@@ -2,9 +2,8 @@ package kg.inai.qrgenerator.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.service.inai.statistics.StatisticsService;
-import kg.inai.qrgenerator.service.inai.statistics.dto.StudentDto;
+import kg.inai.qrgenerator.service.inai.statistics.dto.StudentStatisticsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,16 +23,16 @@ public class StatisticsController {
 
     @Operation(summary = "Получение списка студентов по (айди группы, датам) в сортировке имен")
     @GetMapping("/name")
-    public ResponseEntity<List<StudentDto>> getByFullName(@RequestParam Long groupId,
-                                                      @RequestParam LocalDate from,
-                                                      @RequestParam LocalDate till) {
+    public ResponseEntity<List<StudentStatisticsDto>> getByFullName(@RequestParam Long groupId,
+                                                                    @RequestParam LocalDate from,
+                                                                    @RequestParam LocalDate till) {
 
         return ResponseEntity.ok(statisticsService.getByFullName(groupId, from, till));
     }
 
     @Operation(summary = "Получение списка студентов по (айди группы, датам) в возрастающей сортировке посещаемости")
     @GetMapping("/score/asc")
-    public ResponseEntity<List<StudentDto>> getByScoreAsc(@RequestParam Long groupId,
+    public ResponseEntity<List<StudentStatisticsDto>> getByScoreAsc(@RequestParam Long groupId,
                                                       @RequestParam LocalDate from,
                                                       @RequestParam LocalDate till) {
 
@@ -42,7 +41,7 @@ public class StatisticsController {
 
     @Operation(summary = "Получение списка студентов по (айди группы, датам) в возрастающей сортировке посещаемости")
     @GetMapping("/score/desc")
-    public ResponseEntity<List<StudentDto>> getByScoreDesc(@RequestParam Long groupId,
+    public ResponseEntity<List<StudentStatisticsDto>> getByScoreDesc(@RequestParam Long groupId,
                                                        @RequestParam LocalDate from,
                                                        @RequestParam LocalDate till) {
 
@@ -51,7 +50,7 @@ public class StatisticsController {
 
     @Operation(summary = "Получение списка студентов по (айди группы, предмета, датам) в сортировке имен")
     @GetMapping("/name/subject")
-    public ResponseEntity<List<StudentDto>> getByFullNameSubjectId(@RequestParam Long groupId,
+    public ResponseEntity<List<StudentStatisticsDto>> getByFullNameSubjectId(@RequestParam Long groupId,
                                                                    @RequestParam LocalDate from,
                                                                    @RequestParam LocalDate till,
                                                                    @RequestParam Long subjectId) {
@@ -62,7 +61,7 @@ public class StatisticsController {
     @Operation(summary = "Получение списка студентов по (айди группы, предмета, датам)" +
             " в возрастающей сортировке посещаемости")
     @GetMapping("/score/asc/subject")
-    public ResponseEntity<List<StudentDto>> getByScoreAscSubjectId(@RequestParam Long groupId,
+    public ResponseEntity<List<StudentStatisticsDto>> getByScoreAscSubjectId(@RequestParam Long groupId,
                                                       @RequestParam LocalDate from,
                                                       @RequestParam LocalDate till,
                                                       @RequestParam Long subjectId) {
@@ -73,7 +72,7 @@ public class StatisticsController {
     @Operation(summary = "Получение списка студентов по (айди группы, предмета, датам)" +
             " в возрастающей сортировке посещаемости")
     @GetMapping("/score/desc/subject")
-    public ResponseEntity<List<StudentDto>> getByScoreDescSubjectId(@RequestParam Long groupId,
+    public ResponseEntity<List<StudentStatisticsDto>> getByScoreDescSubjectId(@RequestParam Long groupId,
                                                        @RequestParam LocalDate from,
                                                        @RequestParam LocalDate till,
                                                        @RequestParam Long subjectId) {

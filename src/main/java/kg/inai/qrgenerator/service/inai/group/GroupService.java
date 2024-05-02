@@ -7,7 +7,8 @@ import kg.inai.qrgenerator.entity.Group;
 import kg.inai.qrgenerator.entity.repository.GroupRepository;
 import kg.inai.qrgenerator.entity.repository.UserRepository;
 import kg.inai.qrgenerator.service.inai.group.dto.GroupDto;
-import kg.inai.qrgenerator.service.inai.statistics.dto.StudentDto;
+import kg.inai.qrgenerator.service.inai.group.dto.StudentAdminDto;
+import kg.inai.qrgenerator.service.inai.group.dto.StudentDto;
 import kg.inai.qrgenerator.service.utils.ResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class GroupService {
                 .toList();
     }
 
-    public List<StudentDto> getGroupListAdmin(Long groupId) {
+    public List<StudentAdminDto> getGroupListAdmin(Long groupId) {
         var group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new NotFoundException(GROUP_NOT_FOUND));
 
@@ -68,13 +69,13 @@ public class GroupService {
                         strBuilder.append(student.getMiddleName());
                     }
 
-                    return StudentDto.builder()
+                    return StudentAdminDto.builder()
                             .id(student.getId())
                             .fullName(strBuilder.toString())
                             .password(student.getPassword())
                             .build();
                 })
-                .sorted(Comparator.comparing(StudentDto::getFullName))
+                .sorted(Comparator.comparing(StudentAdminDto::getFullName))
                 .toList();
     }
 

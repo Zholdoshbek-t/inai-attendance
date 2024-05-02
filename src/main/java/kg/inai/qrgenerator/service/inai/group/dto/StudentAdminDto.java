@@ -1,0 +1,21 @@
+package kg.inai.qrgenerator.service.inai.group.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudentAdminDto {
+
+    private Long id;
+
+    private String fullName;
+
+    private Long absenceNum;
+
+    private String password;
+}

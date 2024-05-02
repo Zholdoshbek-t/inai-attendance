@@ -5,7 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.service.inai.group.GroupService;
 import kg.inai.qrgenerator.service.inai.group.dto.GroupDto;
-import kg.inai.qrgenerator.service.inai.statistics.dto.StudentDto;
+import kg.inai.qrgenerator.service.inai.group.dto.StudentAdminDto;
+import kg.inai.qrgenerator.service.inai.group.dto.StudentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class GroupController {
 
     @Operation(summary = "Получение списка студентов определенной группы с паролями")
     @GetMapping("/admin")
-    public ResponseEntity<List<StudentDto>> getGroupListAdmin(@RequestParam Long groupId) {
+    public ResponseEntity<List<StudentAdminDto>> getGroupListAdmin(@RequestParam Long groupId) {
 
         return ResponseEntity.ok(groupService.getGroupListAdmin(groupId));
     }
