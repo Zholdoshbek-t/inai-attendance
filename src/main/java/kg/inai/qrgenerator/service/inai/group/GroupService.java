@@ -118,8 +118,8 @@ public class GroupService {
             throw new AlreadyExistsException(ALREADY_EXISTS);
         }
 
-        group.getStudents().add(user);
-        groupRepository.save(group);
+        user.setGroup(group);
+        userRepository.save(user);
 
         return ResponseMapper.responseSuccess();
     }
@@ -136,8 +136,8 @@ public class GroupService {
             throw new NotFoundException(STUDENT_NOT_FOUND_IN_GROUP);
         }
 
-        group.getStudents().remove(user);
-        groupRepository.save(group);
+        user.setGroup(null);
+        userRepository.save(user);
 
         return ResponseMapper.responseSuccess();
     }

@@ -71,12 +71,12 @@ public class SubjectService {
 
     public RestResponse createSubjectSchedule(SubjectScheduleDto subjectScheduleDto) {
 
-        if(subjectScheduleRepository.existsByTeacherIdAndClassDayIdAndClassTimeId(
+        if (subjectScheduleRepository.existsByTeacherIdAndClassDayIdAndClassTimeId(
                 subjectScheduleDto.getTeacherId(),
                 subjectScheduleDto.getClassDayId(),
                 subjectScheduleDto.getClassTimeId())) {
             throw new AlreadyExistsException(TEACHER_HAS_SUBJECT);
-        } else if(subjectScheduleRepository.existsBySubjectIdAndGroupIdAndTeacherIdAndClassDayIdAndClassTimeId(
+        } else if (subjectScheduleRepository.existsBySubjectIdAndGroupIdAndTeacherIdAndClassDayIdAndClassTimeId(
                 subjectScheduleDto.getSubjectId(),
                 subjectScheduleDto.getGroupId(),
                 subjectScheduleDto.getTeacherId(),
@@ -91,8 +91,8 @@ public class SubjectService {
         var optionalClassTime = classTimeRepository.findById(subjectScheduleDto.getClassTimeId());
         var optionalClassDay = classDayRepository.findById(subjectScheduleDto.getClassDayId());
 
-        if(optionalSubject.isEmpty() || optionalTeacher.isEmpty() || optionalGroup.isEmpty()
-        || optionalClassTime.isEmpty() || optionalClassDay.isEmpty()) {
+        if (optionalSubject.isEmpty() || optionalTeacher.isEmpty() || optionalGroup.isEmpty()
+                || optionalClassTime.isEmpty() || optionalClassDay.isEmpty()) {
             throw new NotFoundException(VALUE_NOT_FOUND);
         }
 
@@ -114,12 +114,12 @@ public class SubjectService {
         var subjectSchedule = subjectScheduleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(SUBJECT_SCHEDULE_NOT_FOUND));
 
-        if(subjectScheduleRepository.existsByTeacherIdAndClassDayIdAndClassTimeId(
+        if (subjectScheduleRepository.existsByTeacherIdAndClassDayIdAndClassTimeId(
                 subjectScheduleDto.getTeacherId(),
                 subjectScheduleDto.getClassDayId(),
                 subjectScheduleDto.getClassTimeId())) {
             throw new AlreadyExistsException(TEACHER_HAS_SUBJECT);
-        } else if(subjectScheduleRepository.existsBySubjectIdAndGroupIdAndTeacherIdAndClassDayIdAndClassTimeId(
+        } else if (subjectScheduleRepository.existsBySubjectIdAndGroupIdAndTeacherIdAndClassDayIdAndClassTimeId(
                 subjectScheduleDto.getSubjectId(),
                 subjectScheduleDto.getGroupId(),
                 subjectScheduleDto.getTeacherId(),
@@ -159,6 +159,7 @@ public class SubjectService {
         var today = LocalDate.now().getDayOfWeek().name();
         var classDay = classDayRepository.findByDayEng(today)
                 .orElseThrow(() -> new NotFoundException(VALUE_NOT_FOUND));
+
         return mapToClassDtoList(teacher.getId(), classDay.getId());
     }
 
@@ -171,7 +172,7 @@ public class SubjectService {
 
         var classDays = classDayRepository.getClassDays();
 
-        for(ClassDay classDay: classDays) {
+        for (ClassDay classDay : classDays) {
             var classes = mapToClassDtoList(teacher.getId(), classDay.getId());
             dayClassesDto.put(classDay.getDayRus(), classes);
         }
@@ -179,14 +180,34 @@ public class SubjectService {
         return dayClassesDto;
     }
 
-    public Map<String, List<StudentClassDto>> getStudentsClasses(Group groupId) {
+    public List<StudentClassDto> getStudentClasses(Long groupId) {
 
-        LocalDate.now().getDayOfWeek().name();
-        return null;
-    }
+        if(!groupRepository.existsById(groupId)) {
+            throw new NotFoundException(GROUP_NOT_FOUND);
+        }
 
-    public static void main(String[] args) {
-        System.out.println(LocalDate.now().getDayOfWeek().name());
+        var currentDay = LocalDate.now().getDayOfWeek().name();
+
+        return subjectScheduleRepository.findAllByClassDay_DayEngAndGroupId(currentDay, groupId)
+                .stream()
+                .sorted(Comparator.comparing(schedule -> schedule.getClassTime().getClassHours()))
+                .sorted(Comparator.comparing(schedule -> schedule.getClassTime().getClassMinutes()))
+                .map(schedule -> {
+                    var hours = schedule.getClassTime().getClassHours() < 10 ?
+                            "0" + schedule.getClassTime().getClassHours() :
+                            String.valueOf(schedule.getClassTime().getClassHours());
+
+                    var minutes = schedule.getClassTime().getClassMinutes() < 10 ?
+                            "0" + schedule.getClassTime().getClassMinutes() :
+                            String.valueOf(schedule.getClassTime().getClassMinutes());
+
+                    return StudentClassDto.builder()
+                            .subjectScheduleId(schedule.getId())
+                            .subjectName(schedule.getSubject().getName())
+                            .classTime(hours + ":" + minutes)
+                            .build();
+                })
+                .toList();
     }
 
     private List<ClassDto> mapToClassDtoList(Long teacherId, Long classDayId) {

@@ -51,7 +51,10 @@ public class User implements UserDetails {
     )
     private Group group;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "teacher"
+    )
     private List<SubjectSchedule> subjectSchedules;
 
     @Override

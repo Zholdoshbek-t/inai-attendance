@@ -16,6 +16,4 @@ public class StudentDto {
     private String fullName;
 
     private Long absenceNum;
-
-    private String password;
 }

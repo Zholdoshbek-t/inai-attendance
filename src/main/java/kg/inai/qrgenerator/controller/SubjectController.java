@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.inai.qrgenerator.controller.dto.RestResponse;
 import kg.inai.qrgenerator.service.inai.subject.SubjectService;
 import kg.inai.qrgenerator.service.inai.subject.dto.ClassDto;
+import kg.inai.qrgenerator.service.inai.subject.dto.StudentClassDto;
 import kg.inai.qrgenerator.service.inai.subject.dto.SubjectDto;
 import kg.inai.qrgenerator.service.inai.subject.dto.SubjectScheduleDto;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +76,12 @@ public class SubjectController {
     public ResponseEntity<Map<String, List<ClassDto>>> getTeachersWeekClasses(@RequestParam Long teacherId) {
 
         return ResponseEntity.ok(subjectService.getTeachersWeekClasses(teacherId));
+    }
+
+    @Operation(summary = "Получение списка пар ученика на сегодня")
+    @GetMapping("/classes/student")
+    public ResponseEntity<List<StudentClassDto>> getStudentClasses(@RequestParam Long groupId) {
+
+        return ResponseEntity.ok(subjectService.getStudentClasses(groupId));
     }
 }

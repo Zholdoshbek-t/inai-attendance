@@ -16,4 +16,6 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     Boolean existsByTeacherIdAndClassDayIdAndClassTimeId(Long teacherId, Long classDayId, Long classTimeId);
 
     List<SubjectSchedule> findAllByTeacherIdAndClassDayId(Long teacherId, Long classDayId);
+
+    List<SubjectSchedule> findAllByClassDay_DayEngAndGroupId(String dayEng, Long groupId);
 }

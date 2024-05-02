@@ -21,6 +21,10 @@ public class Group {
 
     private String name;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL,
+            mappedBy = "group"
+    )
     private List<User> students;
 }
