@@ -136,8 +136,8 @@ public class GroupService {
             throw new NotFoundException(STUDENT_NOT_FOUND_IN_GROUP);
         }
 
-        user.setGroup(null);
-        userRepository.save(user);
+        group.getStudents().remove(user);
+        groupRepository.save(group);
 
         return ResponseMapper.responseSuccess();
     }
