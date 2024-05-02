@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.SUBJECT_URL;
 
+@CrossOrigin
 @RestController
 @RequestMapping(SUBJECT_URL)
 @RequiredArgsConstructor

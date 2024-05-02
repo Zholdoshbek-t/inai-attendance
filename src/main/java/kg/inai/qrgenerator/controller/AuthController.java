@@ -7,13 +7,11 @@ import kg.inai.qrgenerator.service.inai.auth.dto.AuthReqDto;
 import kg.inai.qrgenerator.service.inai.auth.dto.AuthResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.AUTH_URL;
 
+@CrossOrigin
 @RestController
 @RequestMapping(AUTH_URL)
 @RequiredArgsConstructor

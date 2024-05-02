@@ -12,6 +12,7 @@ import java.util.List;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.ATTENDANCE_URL;
 
+@CrossOrigin
 @RestController
 @RequestMapping(ATTENDANCE_URL)
 @RequiredArgsConstructor

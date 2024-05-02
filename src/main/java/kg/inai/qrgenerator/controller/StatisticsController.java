@@ -13,6 +13,7 @@ import java.util.List;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.STATISTICS_URL;
 
+@CrossOrigin
 @RestController
 @RequestMapping(STATISTICS_URL)
 @RequiredArgsConstructor

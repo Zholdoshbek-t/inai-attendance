@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.USER_URL;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping(USER_URL)
 @RequiredArgsConstructor

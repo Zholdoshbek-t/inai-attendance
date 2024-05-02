@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.QR_URL;
 
+@CrossOrigin
 @RestController
 @RequestMapping(QR_URL)
 @RequiredArgsConstructor

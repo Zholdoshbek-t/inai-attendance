@@ -6,6 +6,7 @@ import kg.inai.qrgenerator.service.inai.options.OptionsService;
 import kg.inai.qrgenerator.service.inai.options.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static kg.inai.qrgenerator.commons.constants.Endpoints.OPTIONS_URL;
 
+@CrossOrigin
 @RestController
 @RequestMapping(OPTIONS_URL)
 @RequiredArgsConstructor
