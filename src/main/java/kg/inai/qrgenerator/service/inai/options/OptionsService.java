@@ -109,7 +109,7 @@ public class OptionsService {
         var month = LocalDate.now().getMonthValue();
         var semester = month > 8 ? 1 : 2;
 
-        return subjectScheduleRepository.findAllByOrderBySubjectSemesterAscSubjectYearDesc(semester, year)
+        return subjectScheduleRepository.getAllBySemesterAndYear(semester, year)
                 .stream()
                 .map(schedule -> {
 
