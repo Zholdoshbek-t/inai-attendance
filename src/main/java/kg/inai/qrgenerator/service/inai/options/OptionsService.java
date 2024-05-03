@@ -7,6 +7,7 @@ import kg.inai.qrgenerator.service.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +21,7 @@ public class OptionsService {
     private final SubjectRepository subjectRepository;
     private final ClassDayRepository classDayRepository;
     private final ClassTimeRepository classTimeRepository;
+    private final SubjectScheduleRepository subjectScheduleRepository;
 
     public List<TeacherOptionDto> getTeachers() {
 
@@ -98,6 +100,53 @@ public class OptionsService {
                         .name(Utils.getFullName(user))
                         .build())
                 .sorted(Comparator.comparing(StudentOptionDto::getName))
+                .toList();
+    }
+
+    public List<ScheduleOptionDto> getSubjectSchedules() {
+
+        var year = LocalDate.now().getYear();
+        var month = LocalDate.now().getMonthValue();
+        var semester = month > 8 ? 1 : 2;
+
+        return subjectScheduleRepository.findAllByOrderBySubjectSemesterAscSubjectYearDesc(semester, year)
+                .stream()
+                .map(schedule -> {
+
+                    var classTime = schedule.getClassTime();
+
+                    var hours = classTime.getClassHours() < 10 ?
+                            "0" + classTime.getClassHours() :
+                            String.valueOf(classTime.getClassHours());
+
+                    var minutes = classTime.getClassMinutes() < 10 ?
+                            "0" + classTime.getClassMinutes() :
+                            String.valueOf(classTime.getClassMinutes());
+
+                    return ScheduleOptionDto.builder()
+                            .subjectScheduleId(schedule.getId())
+                            .teacher(Utils.getFullName(schedule.getTeacher()))
+                            .subjectName(schedule.getSubject().getName())
+                            .classTime(hours + ":" + minutes)
+                            .classDay(schedule.getClassDay().getDayRus())
+                            .build();
+                })
+                .toList();
+    }
+
+    public List<UserOptionDto> getUsers() {
+
+        return userRepository.findAllByOrderByIdAsc().stream()
+                .map(user -> UserOptionDto.builder()
+                        .id(user.getId())
+                        .name(Utils.getFullName(user))
+                        .username(user.getUsername())
+                        .password(user.getPassword())
+                        .role(user.getRole().getNameLocal())
+                        .group(user.getRole().equals(Role.STUDENT) ?
+                                user.getGroup().getName() :
+                                "НЕ СТУДЕНТ")
+                        .build())
                 .toList();
     }
 }

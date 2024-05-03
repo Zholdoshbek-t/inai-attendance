@@ -18,4 +18,6 @@ public interface SubjectScheduleRepository extends JpaRepository<SubjectSchedule
     List<SubjectSchedule> findAllByTeacherIdAndClassDayId(Long teacherId, Long classDayId);
 
     List<SubjectSchedule> findAllByClassDay_DayEngAndGroupId(String dayEng, Long groupId);
+
+    List<SubjectSchedule> findAllByOrderBySubjectSemesterAscSubjectYearDesc(Integer semester, Integer year);
 }

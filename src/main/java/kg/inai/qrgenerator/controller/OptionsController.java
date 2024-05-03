@@ -72,4 +72,18 @@ public class OptionsController {
 
         return ResponseEntity.ok(optionsService.getStudents());
     }
+
+    @Operation(summary = "Получение списка пар на текущий год и семестр")
+    @GetMapping("/subject-schedules")
+    public ResponseEntity<List<ScheduleOptionDto>> getSubjectSchedules() {
+
+        return ResponseEntity.ok(optionsService.getSubjectSchedules());
+    }
+
+    @Operation(summary = "Получение списка пользователей")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserOptionDto>> getUsers() {
+
+        return ResponseEntity.ok(optionsService.getUsers());
+    }
 }
