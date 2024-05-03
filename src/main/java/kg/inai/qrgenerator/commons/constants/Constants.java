@@ -7,6 +7,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Constants {
 
+    public static final String STUDENT_HAS_NO_GROUP = "У студента нет группы";
+    public static final String NOT_STUDENT = "Не студент";
     public static final Integer EARTH_RADIUS = 6371000;
     public static final Double LATITUDE = 42.874703;
     public static final Double LONGITUDE = 74.578668;

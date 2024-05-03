@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static kg.inai.qrgenerator.commons.constants.Constants.NOT_STUDENT;
+import static kg.inai.qrgenerator.commons.constants.Constants.STUDENT_HAS_NO_GROUP;
+
 @Service
 @RequiredArgsConstructor
 public class OptionsService {
@@ -139,16 +142,29 @@ public class OptionsService {
     public List<UserOptionDto> getUsers() {
 
         return userRepository.findAllByOrderByIdAsc().stream()
-                .map(user -> UserOptionDto.builder()
-                        .id(user.getId())
-                        .name(Utils.getFullName(user))
-                        .username(user.getUsername())
-                        .password(user.getPassword())
-                        .role(user.getRole().getNameLocal())
-                        .group(user.getRole().equals(Role.STUDENT) ?
-                                user.getGroup().getName() :
-                                "НЕ СТУДЕНТ")
-                        .build())
+                .map(user -> {
+
+                    String groupName;
+
+                    if(user.getRole().equals(Role.STUDENT)) {
+                        if(user.getGroup() != null) {
+                            groupName = user.getGroup().getName();
+                        } else {
+                            groupName = STUDENT_HAS_NO_GROUP;
+                        }
+                    } else {
+                        groupName = NOT_STUDENT;
+                    }
+
+                    return UserOptionDto.builder()
+                            .id(user.getId())
+                            .name(Utils.getFullName(user))
+                            .username(user.getUsername())
+                            .password(user.getPassword())
+                            .role(user.getRole().getNameLocal())
+                            .group(groupName)
+                            .build();
+                })
                 .toList();
     }
 }
