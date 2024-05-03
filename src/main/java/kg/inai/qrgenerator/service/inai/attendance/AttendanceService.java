@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static kg.inai.qrgenerator.commons.enums.SystemCode.*;
@@ -26,7 +25,7 @@ public class AttendanceService {
     private final SubjectScheduleRepository subjectScheduleRepository;
     private final UserRepository userRepository;
 
-    public RestResponse attendTheClass(Long attendanceId, Long studentId) {
+    public RestResponse attendTheClass(Long attendanceId, Long studentId, Double latitude, Double longitude) {
 
         var attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new NotFoundException(VALUE_NOT_FOUND));
@@ -36,7 +35,12 @@ public class AttendanceService {
 
         var difference = Duration.between(attendance.getTime(), LocalTime.now());
 
-        if(!LocalDate.now().isEqual(attendance.getDate()) ||
+        if (!Utils.isInTheUniRange(latitude, longitude)) {
+            return RestResponse.builder()
+                    .message(NOT_IN_THE_RANGE.getMessage())
+                    .code(NOT_IN_THE_RANGE.getCode())
+                    .build();
+        } else if (!LocalDate.now().isEqual(attendance.getDate()) ||
                 difference.compareTo(Duration.ofMinutes(10)) > 0) {
             return RestResponse.builder()
                     .message(LECTURE_TIME_EXPIRE.getMessage())
@@ -53,7 +57,7 @@ public class AttendanceService {
     public List<String> getCurrentClassAttendanceBySubjectSchedule(Long subjectScheduleId) {
 
         var subjectSchedule = subjectScheduleRepository.findById(subjectScheduleId)
-                        .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(SUBJECT_NOT_FOUND));
 
         var attendance = attendanceRepository.findByDateAndSubjectSchedule(LocalDate.now(), subjectSchedule)
                 .orElseThrow(() -> new NotFoundException(VALUE_NOT_FOUND));

@@ -24,9 +24,11 @@ public class AttendanceController {
     @Operation(summary = "Регистрация студента в определенную запись пары по (айди пары, айди студента)")
     @PutMapping
     public ResponseEntity<RestResponse> attendTheClass(@RequestParam Long attendanceId,
-                                                       @RequestParam Long studentId) {
+                                                       @RequestParam Long studentId,
+                                                       @RequestParam Double latitude,
+                                                       @RequestParam Double longitude) {
 
-        return ResponseEntity.ok(attendanceService.attendTheClass(attendanceId, studentId));
+        return ResponseEntity.ok(attendanceService.attendTheClass(attendanceId, studentId, latitude, longitude));
     }
 
     @Operation(summary = "Получение списка присутствующих на сегодняшней паре")

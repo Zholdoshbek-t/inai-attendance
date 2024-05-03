@@ -19,6 +19,7 @@ public enum SystemCode {
     JWT_EXCEPTION(3, "JWT не актуален или не начинается с Bearer"),
     TOKEN_IS_EXPIRED(4, "Время JWT просрочено"),
     LECTURE_TIME_EXPIRE(4, "Время актуальности QR-Кода просрочено"),
+    NOT_IN_THE_RANGE(4, "Вы находитесь не в зоне университета"),
     INCORRECT_PASSWORD(4, "Неправильный пароль"),
     INTERNAL_SERVER_ERROR(999, "Внутренняя ошибка сервера");
 
