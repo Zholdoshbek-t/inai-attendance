@@ -127,6 +127,8 @@ public class OptionsService {
                             .subjectScheduleId(schedule.getId())
                             .teacher(Utils.getFullName(schedule.getTeacher()))
                             .subjectName(schedule.getSubject().getName())
+                            .groupId(schedule.getGroup().getId())
+                            .groupName(schedule.getGroup().getName())
                             .classTime(hours + ":" + minutes)
                             .classDay(schedule.getClassDay().getDayRus())
                             .build();

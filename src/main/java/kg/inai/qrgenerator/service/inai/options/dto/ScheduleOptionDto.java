@@ -20,4 +20,8 @@ public class ScheduleOptionDto {
     private String classDay;
 
     private String teacher;
+
+    private Long groupId;
+
+    private String groupName;
 }
